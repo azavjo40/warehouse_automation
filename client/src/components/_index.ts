@@ -1,2 +1,4 @@
 import { Navbar } from "./navbar/Navbar"
-export { Navbar }
+import { LoginForm } from "./auth/LoginForm"
+import { RegisterForm } from "./auth/RegisterForm"
+export { Navbar, RegisterForm, LoginForm }

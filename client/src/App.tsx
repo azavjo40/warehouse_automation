@@ -5,7 +5,7 @@ import { useRouter } from "./routers/Router"
 import "./App.css"
 
 const App: React.FC = () => {
-  const isAuthUser: boolean = true
+  const isAuthUser: boolean = false
   const router = useRouter({ isAuthUser })
   return (
     <Router>
