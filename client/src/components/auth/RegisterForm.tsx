@@ -1,8 +1,30 @@
-import React from "react"
+import React, { useState } from "react"
+import { FormProps } from "../../interface_client/auth"
+export const RegisterForm: React.FC<FormProps> = ({ postRegister }) => {
+  const [form, setForm] = useState({
+    name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    position: "",
+  })
 
-export const RegisterForm: React.FC = () => {
+  console.log(form)
+  const changehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault()
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    })
+  }
+
   return (
-    <form className='col s4'>
+    <form
+      className='col s4'
+      onSubmit={() => {
+        postRegister(form)
+      }}
+    >
       <div className='row'>
         <div className='input-field col s6'>
           <input
@@ -10,6 +32,9 @@ export const RegisterForm: React.FC = () => {
             type='text'
             className='validate'
             required
+            name='name'
+            value={form.name}
+            onChange={changehandler}
           />
         </div>
 
@@ -19,6 +44,9 @@ export const RegisterForm: React.FC = () => {
             className='validate'
             placeholder='Enter last_name'
             required
+            name='last_name'
+            value={form.last_name}
+            onChange={changehandler}
           />
         </div>
       </div>
@@ -30,6 +58,9 @@ export const RegisterForm: React.FC = () => {
             type='email'
             className='validate'
             required
+            name='email'
+            value={form.email}
+            onChange={changehandler}
           />
         </div>
       </div>
@@ -41,6 +72,9 @@ export const RegisterForm: React.FC = () => {
             type='password'
             className='validate'
             required
+            name='password'
+            value={form.password}
+            onChange={changehandler}
           />
         </div>
       </div>
