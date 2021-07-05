@@ -1,30 +1,35 @@
 import React, { useState } from "react"
-import { FormProps } from "../../interface_client/auth"
-export const RegisterForm: React.FC<FormProps> = ({ postRegister }) => {
+import { FormPropsRegister } from "./interface"
+export const RegisterForm: React.FC<FormPropsRegister> = ({ postRegister }) => {
   const [form, setForm] = useState({
     name: "",
     last_name: "",
     email: "",
     password: "",
-    position: "",
+    position: "chief",
   })
 
-  console.log(form)
   const changehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     })
   }
 
+  const autoRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    postRegister(form)
+    setForm({
+      name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      position: "",
+    })
+  }
+
   return (
-    <form
-      className='col s4'
-      onSubmit={() => {
-        postRegister(form)
-      }}
-    >
+    <form className='col s4' onSubmit={e => autoRegister(e)}>
       <div className='row'>
         <div className='input-field col s6'>
           <input
@@ -65,7 +70,7 @@ export const RegisterForm: React.FC<FormProps> = ({ postRegister }) => {
         </div>
       </div>
 
-      <div className='row'>
+      <div className='row '>
         <div className='input-field col s12'>
           <input
             placeholder='Enter password'
@@ -78,6 +83,44 @@ export const RegisterForm: React.FC<FormProps> = ({ postRegister }) => {
           />
         </div>
       </div>
+
+      <div className='row '>
+        <p>
+          <label>
+            <input
+              type='radio'
+              name='position'
+              value='chief'
+              required
+              onChange={changehandler}
+            />
+            <span>Chief</span>
+          </label>
+
+          <label>
+            <input
+              type='radio'
+              name='position'
+              value='maneger'
+              required
+              onChange={changehandler}
+            />
+            <span>Maneger</span>
+          </label>
+
+          <label>
+            <input
+              type='radio'
+              name='position'
+              value='storekeeper'
+              required
+              onChange={changehandler}
+            />
+            <span>Storekeeper</span>
+          </label>
+        </p>
+      </div>
+
       <button
         className='btn waves-effect waves-light right'
         type='submit'
