@@ -6,7 +6,7 @@ import { authRegister } from "../redux/auth/authAcsions"
 export const Register: React.FC = () => {
   const dispatch = useDispatch()
   const postRegister = (form: TypesFormRegister): void => {
-    dispatch(authRegister())
+    dispatch(authRegister(form))
   }
 
   return (

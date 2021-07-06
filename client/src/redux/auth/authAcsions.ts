@@ -1,18 +1,24 @@
 import { Dispatch } from "redux"
-export function authRegister() {
+import {
+  TypesFormRegister,
+  TypesFormLogin,
+} from ".././/..//components/auth/interface"
+import { useHttp } from "../hooks/useHttp"
+
+export function authRegister(form: TypesFormRegister) {
   return async (dispach: Dispatch) => {
     try {
-      console.log("hello")
+      console.log(form)
     } catch (e) {
       console.log(e)
     }
   }
 }
 
-export function authLogin() {
+export function authLogin(form: TypesFormLogin) {
   return async (dispach: Dispatch) => {
     try {
-      console.log("hello")
+      console.log(form)
     } catch (e) {
       console.log(e)
     }

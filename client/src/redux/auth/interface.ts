@@ -1,4 +1,4 @@
-export interface initialStateAuth {
+export interface InitialStateAuth {
   isAuthUser: boolean
 }
 

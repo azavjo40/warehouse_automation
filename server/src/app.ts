@@ -1,14 +1,16 @@
-import express, { Application, Request, Response } from "express"
+import express, { Application, Request, Response, NextFunction } from "express"
 import { createServer } from "http"
-import mongoose from "mongoose"
+import { connect } from "mongoose"
 import { mongoConfig } from "./config-ts/default"
+import { routerAuth } from "./routers/_index"
 const app: Application = express()
 const http = createServer(app)
-//  --save-dev
-const PORT = process.env.PORT || mongoConfig.port
+
+app.use("/api/auth", routerAuth)
 async function start() {
+  const PORT: any = process.env.PORT || mongoConfig.port
   try {
-    await mongoose.connect(mongoConfig.mongoUri, {
+    await connect(mongoConfig.mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

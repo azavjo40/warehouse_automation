@@ -6,8 +6,7 @@ import { authLogin } from "../redux/auth/authAcsions"
 export const Login: React.FC = () => {
   const dispatch = useDispatch()
   const postLogin = (form: TypesFormLogin): void => {
-    console.log(form)
-    dispatch(authLogin())
+    dispatch(authLogin(form))
   }
 
   return (
