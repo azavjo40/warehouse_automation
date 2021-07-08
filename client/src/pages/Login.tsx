@@ -1,5 +1,5 @@
 import React from "react"
-import { LoginForm } from "../components/_index"
+import { LoginForm } from "../components/index"
 import { TypesFormLogin } from "../components/auth/interface"
 import { useDispatch } from "react-redux"
 import { authLogin } from "../redux/auth/authAcsions"

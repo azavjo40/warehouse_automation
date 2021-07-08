@@ -1,16 +1,18 @@
 import User from "../../models/auth"
 import { Request, Response } from "express"
-import { token } from "../../midllware/token"
+import { token } from "../../utils/token"
 export const register = async (req: Request, res: Response) => {
   try {
+    // const { name, last_name, email, password, position } = req.body
+    res.status(201).json({ message: "User create" })
   } catch (e) {
-    res.status(500).json({ message: "Something went wrong, please try again" })
+    console.log(e)
   }
 }
 
 export const login = async (req: Request, res: Response) => {
   try {
   } catch (e) {
-    res.status(500).json({ message: "Something went wrong, please try again" })
+    console.log(e)
   }
 }

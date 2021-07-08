@@ -1,6 +1,6 @@
 import React from "react"
 import { TypesFormRegister } from "../components/auth/interface"
-import { RegisterForm } from "../components/_index"
+import { RegisterForm } from "../components/index"
 import { useDispatch } from "react-redux"
 import { authRegister } from "../redux/auth/authAcsions"
 export const Register: React.FC = () => {

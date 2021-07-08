@@ -1,6 +1,6 @@
 import React from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
-import { Login, Register, Product, Home } from "../pages/_index"
+import { Login, Register, Product, Home } from "../pages/index"
 interface Props {
   isAuthUser: boolean
 }
@@ -19,7 +19,7 @@ export const useRouter: React.FC<Props> = ({ isAuthUser }) => {
         </>
       ) : (
         <>
-        <Route path='/register' exact>
+          <Route path='/register' exact>
             <Register />
           </Route>
 
