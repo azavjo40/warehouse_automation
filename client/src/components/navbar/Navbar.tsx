@@ -1,11 +1,11 @@
 import React from "react"
+import { useDispatch } from "react-redux"
 import { NavLink } from "react-router-dom"
+import { logout } from "../../redux/auth/authAcsions"
+import { NavbarProps } from "./interface"
 
-interface Props {
-  isAuthUser: boolean
-}
-
-export const Navbar: React.FC<Props> = ({ isAuthUser }) => {
+export const Navbar: React.FC<NavbarProps> = ({ isAuthUser }) => {
+  const dispatch = useDispatch()
   return (
     <>
       <nav>
@@ -22,7 +22,7 @@ export const Navbar: React.FC<Props> = ({ isAuthUser }) => {
                 <li>
                   <NavLink to='/product'>Product</NavLink>
                 </li>
-                <li>
+                <li onClick={() => dispatch(logout())}>
                   <NavLink to='/'>Log out</NavLink>
                 </li>
               </ul>

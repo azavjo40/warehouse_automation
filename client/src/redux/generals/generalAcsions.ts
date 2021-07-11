@@ -1,24 +1,48 @@
 import { ActionGenerals } from "./interFace"
 import { IS_LOADING, SHOW_ALERT } from "./types"
 import { Dispatch } from "redux"
+import { LOCALSTORAGENAME } from "../../constants/index"
+
+export const setStorage = async (items: any) => {
+  try {
+    await localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(items))
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const getStorage = async () => {
+  let storage: any = await JSON.parse(
+    localStorage.getItem(LOCALSTORAGENAME) || "hello"
+  )
+  if (storage) return storage
+}
 
 export const showLoader = (bool: boolean) => {
   return (dispatch: Dispatch<ActionGenerals>): void => {
-    dispatch({ type: IS_LOADING, payload: bool })
+    try {
+      dispatch({ type: IS_LOADING, payload: bool })
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
 
 export function showAlert(text: string) {
   return (dispatch: Dispatch<ActionGenerals>) => {
-    dispatch({
-      type: SHOW_ALERT,
-      payload: text,
-    })
-    setTimeout(() => {
+    try {
       dispatch({
         type: SHOW_ALERT,
-        payload: null,
+        payload: text,
       })
-    }, 3000)
+      setTimeout(() => {
+        dispatch({
+          type: SHOW_ALERT,
+          payload: null,
+        })
+      }, 3000)
+    } catch (e) {
+      console.log(e)
+    }
   }
 }

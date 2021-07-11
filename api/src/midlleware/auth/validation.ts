@@ -12,7 +12,7 @@ export const validation = (req: Request, res: Response, next: NextFunction) => {
       } else if (!email) {
         res.json({ message: "Fill out the forms email" })
       } else if (pass.length < 6) {
-        res.json({ message: "Fill out the forms password" })
+        res.json({ message: "Password must be more than 6 characters" })
       } else if (!position) {
         res.json({ message: "Fill out the forms position" })
       } else {
