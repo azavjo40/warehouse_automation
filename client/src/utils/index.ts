@@ -1,1 +1,2 @@
-export const a = 0
+import { getStorage } from "./storage"
+export { getStorage }
