@@ -1,32 +1,45 @@
 import React from "react"
 import { Redirect, Route, Switch } from "react-router-dom"
-import { Login, Register, Product, Home, PermissionsUser } from "../pages/index"
+import {
+  Login,
+  Register,
+  DispatchProduct,
+  ShipmentProduct,
+  NoPermissionsUser,
+  UserWorking,
+  HistoryProduct,
+} from "../pages/index"
 import { getStorage } from "../utils/index"
 import { PropsRouter } from "./interface"
-const storage: any = getStorage()
-
 export const useRouter: React.FC<PropsRouter> = ({ isAuthUser }) => {
-  if (isAuthUser) {
+  const storage: any = getStorage()
+  if (isAuthUser && storage.user.permissions === "false") {
     return (
       <Switch>
-        {storage.user.permissions === "false" ? (
-          <>
-            <Route path='/' exact>
-              <PermissionsUser />
-            </Route>
-            <Redirect to='/' />
-          </>
-        ) : (
-          <>
-            <Route path='/product' exact>
-              <Product />
-            </Route>
-            <Route path='/home' exact>
-              <Home />
-            </Route>
-            <Redirect to='/home' />
-          </>
-        )}
+        <Route path={`/${storage.user.name}`} exact>
+          <NoPermissionsUser />
+        </Route>
+        <Redirect to={`/${storage.user.name}`} />
+      </Switch>
+    )
+  }
+
+  if (isAuthUser && storage.user.permissions === "true") {
+    return (
+      <Switch>
+        <Route path='/history/product' exact>
+          <HistoryProduct />
+        </Route>
+        <Route path='/user/working' exact>
+          <UserWorking />
+        </Route>
+        <Route path='/dispatch/product' exact>
+          <DispatchProduct />
+        </Route>
+        <Route path={`/shipment/product`} exact>
+          <ShipmentProduct />
+        </Route>
+        <Redirect to={`/shipment/product`} />
       </Switch>
     )
   } else {

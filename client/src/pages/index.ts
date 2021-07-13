@@ -1,6 +1,16 @@
 import { Login } from "./Login"
 import { Register } from "./Register"
-import { Home } from "./Home"
-import { Product } from "./Product"
-import { PermissionsUser } from "./PermissionsUser"
-export { Home, Product, Login, Register, PermissionsUser }
+import { ShipmentProduct } from "./ShipmentProduct"
+import { DispatchProduct } from "./DispatchProduct"
+import { NoPermissionsUser } from "./NoPermissionsUser"
+import { UserWorking } from "./UserWorking"
+import { HistoryProduct } from "./HistoryProduct"
+export {
+  ShipmentProduct,
+  DispatchProduct,
+  Login,
+  Register,
+  NoPermissionsUser,
+  UserWorking,
+  HistoryProduct,
+}

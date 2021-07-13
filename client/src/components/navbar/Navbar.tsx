@@ -7,52 +7,54 @@ import { getStorage } from "../../utils/index"
 export const Navbar: React.FC<NavbarProps> = ({ isAuthUser }) => {
   const dispatch = useDispatch()
   const storage: any = getStorage()
-  if (isAuthUser) {
+  if (isAuthUser && storage.user) {
     return (
-      <>
-        <nav>
-          <div className='nav-wrapper  indigo darken-4 p_r_l'>
-            <>
-              <NavLink to='/home' className='brand-logo hide-on-med-and-down'>
-                {storage.user &&
-                  `${storage.user.position.toLowerCase()} :  ${storage.user.name.toLowerCase()}`}
-              </NavLink>
-              <ul id='nav-mobile' className='right '>
-                {storage.permissions === "true" && (
-                  <>
-                    <li>
-                      <NavLink to='/home'>Home</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to='/product'>Product</NavLink>
-                    </li>
-                  </>
-                )}
-                <li onClick={() => dispatch(logout())}>
-                  <NavLink to='/'>Log out</NavLink>
+      <nav>
+        <div className='nav-wrapper  indigo darken-4 p_r_l'>
+          <NavLink to='/' className='brand-logo hide-on-med-and-down'>
+            {storage.user &&
+              `${storage.user.position.toLocaleUpperCase()}:  ${
+                storage.user.name
+              }`}
+          </NavLink>
+          <ul id='nav-mobile' className='right '>
+            {storage.user.permissions === "true" && (
+              <>
+                <li>
+                  <NavLink to={`/shipment/product`}>Shipment Product</NavLink>
                 </li>
-              </ul>
-            </>
-          </div>
-        </nav>
-      </>
+                <li>
+                  <NavLink to='/dispatch/product'>Dispatch Product</NavLink>
+                </li>
+                <li>
+                  <NavLink to='/user/working'>User</NavLink>
+                </li>
+                <li>
+                  <NavLink to='/history/product'>History</NavLink>
+                </li>
+              </>
+            )}
+            <li onClick={() => dispatch(logout())}>
+              <NavLink to='/login'>Log out</NavLink>
+            </li>
+          </ul>
+        </div>
+      </nav>
     )
   } else {
     return (
-      <>
-        <nav>
-          <div className='nav-wrapper  indigo darken-4 p_r_l'>
-            <ul id='nav-mobile' className='right '>
-              <li>
-                <NavLink to='/register'>Register</NavLink>
-              </li>
-              <li>
-                <NavLink to='/login'>Log in</NavLink>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </>
+      <nav>
+        <div className='nav-wrapper  indigo darken-4 p_r_l'>
+          <ul id='nav-mobile' className='right '>
+            <li>
+              <NavLink to='/register'>Register</NavLink>
+            </li>
+            <li>
+              <NavLink to='/login'>Log in</NavLink>
+            </li>
+          </ul>
+        </div>
+      </nav>
     )
   }
 }

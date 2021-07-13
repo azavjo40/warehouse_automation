@@ -18,3 +18,21 @@ code {
 .p_t_30 {
   padding-top: 30px;
 }
+
+.cartNoPermissionsUser {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
+.flex-icone {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.working {
+  margin-top: 1rem;
+}

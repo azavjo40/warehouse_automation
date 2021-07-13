@@ -5,7 +5,7 @@ import {
 } from ".././/..//components/auth/interface"
 import { useHttp } from "../hooks/useHttp"
 import { getStorage, setStorage } from "../generals/generalAcsions"
-import { IS_AUTH_USER } from "./types"
+import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME } from "../../constants"
 
 export const authUser = (isAuthUser: boolean) => {
@@ -75,5 +75,23 @@ export function logout() {
     dispatch(authUser(false) as any)
     localStorage.removeItem(LOCALSTORAGENAME)
     dispatch(autoLogin() as any)
+  }
+}
+
+export const usersWorking = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const options = {
+        url: "/api/auth/users/working",
+        method: "GET",
+        body: null,
+        file: null,
+        token: null,
+        type: USERS_WORLING,
+      }
+      await dispatch(useHttp(options))
+    } catch (e) {
+      console.log(e)
+    }
   }
 }

@@ -1,9 +1,9 @@
 import React from "react"
 
-export const PermissionsUser: React.FC = () => {
+export const DispatchProduct: React.FC = () => {
   return (
     <div className='container'>
-      <h1>hello PermissionsUser</h1>
+      <h1>hello product</h1>
     </div>
   )
 }

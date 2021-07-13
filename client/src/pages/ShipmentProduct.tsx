@@ -1,9 +1,9 @@
 import React from "react"
 
-export const Home: React.FC = () => {
+export const ShipmentProduct: React.FC = () => {
   return (
     <div className='container'>
-      <h1>hello home</h1>
+      <h1>hello Shipment</h1>
     </div>
   )
 }

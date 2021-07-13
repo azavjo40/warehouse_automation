@@ -58,3 +58,12 @@ export const login = async (req: Request, res: Response) => {
     console.log(e)
   }
 }
+
+export const usersWorking = async (req: Request, res: Response) => {
+  try {
+    const user: any = await User.find()
+    res.status(200).json(user)
+  } catch (e) {
+    console.log(e)
+  }
+}

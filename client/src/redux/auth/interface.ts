@@ -1,5 +1,6 @@
 export interface InitialStateAuth {
   isAuthUser: boolean
+  users: Array<[]>
 }
 
 export interface AcsionAuth {
