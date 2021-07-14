@@ -95,3 +95,49 @@ export const usersWorking = () => {
     }
   }
 }
+
+export const userBlockWorker = (
+  _id: string,
+  permissions: boolean,
+  userId: string
+) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const options = {
+        url: "/api/auth/user/change/working",
+        method: "POST",
+        body: { _id, permissions, userId },
+        file: null,
+        token: null,
+        type: null,
+      }
+      const { data } = await dispatch(useHttp(options))
+      await setStorage(data)
+      await setStorage(data)
+      await dispatch(autoLogin() as any)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const userDeleteWorker = (_id: string, userId: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const options = {
+        url: "/api/auth/user/delete/working",
+        method: "POST",
+        body: { _id, userId },
+        file: null,
+        token: null,
+        type: null,
+      }
+      const { data } = await dispatch(useHttp(options))
+      console.log(data)
+      await setStorage(data)
+      await dispatch(autoLogin() as any)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
