@@ -12,16 +12,20 @@ export const UserWorking: React.FC = () => {
   const storage: any = getStorage()
   const working: any = useSelector<any>(state => state.auth.users)
   const dispatch = useDispatch()
-  useEffect(() => dispatch(usersWorking()) as any)
+
+  useEffect(() => dispatch(usersWorking()) as any, [dispatch])
+
   function deleteWorker(_id: string) {
     const confirm: boolean = window.confirm("Are you sure ?")
     if (confirm) {
       dispatch(userDeleteWorker(_id, storage.userId))
+      dispatch(usersWorking())
     }
   }
 
   function blockWorker(_id: string, permissions: boolean) {
     dispatch(userBlockWorker(_id, permissions, storage.userId))
+    dispatch(usersWorking())
   }
   return (
     <div className='container'>
