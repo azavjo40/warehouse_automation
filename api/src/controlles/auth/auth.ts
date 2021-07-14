@@ -74,14 +74,12 @@ export const userBlockWorker = async (req: Request, res: Response) => {
     const ubdate = {
       permissions: JSON.stringify(permissions),
     }
-    console.log(userId)
-    await User.findByIdAndUpdate({ _id }, { $set: ubdate }, { new: true })
-    const user: any = await User.findById({ _id: userId })
-
-    const jwtToken: string = token(user._id)
-    res
-      .status(200)
-      .json({ user, token: `Bearer ${jwtToken}`, userId: user._id })
+    if (_id === userId) {
+      res.status(400).json({ message: "You con not block yourself !" })
+    } else {
+      await User.findByIdAndUpdate({ _id }, { $set: ubdate }, { new: true })
+      res.status(200).json({ message: "Block worker" })
+    }
   } catch (e) {
     console.log(e)
   }
@@ -90,15 +88,11 @@ export const userBlockWorker = async (req: Request, res: Response) => {
 export const userdeleteWorker = async (req: Request, res: Response) => {
   try {
     const { _id, userId } = req.body
-    await User.deleteOne({ _id })
-    const user: any = await User.findById({ _id: userId })
-    const jwtToken: string = token(user._id)
     if (_id === userId) {
-      res.status(400).json({ message: "No worker !" })
+      res.status(400).json({ message: "You con not delete yourself !" })
     } else {
-      res
-        .status(200)
-        .json({ user, token: `Bearer ${jwtToken}`, userId: user._id })
+      await User.deleteOne({ _id })
+      res.status(200).json({ message: "Delete worker" })
     }
   } catch (e) {
     console.log(e)

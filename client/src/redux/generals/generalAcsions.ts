@@ -4,7 +4,6 @@ import { Dispatch } from "redux"
 import { LOCALSTORAGENAME } from "../../constants/index"
 export const setStorage = async (items: any) => {
   try {
-    localStorage.removeItem(LOCALSTORAGENAME)
     localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(items))
   } catch (e) {
     console.log(e)

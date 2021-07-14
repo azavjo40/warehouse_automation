@@ -111,10 +111,7 @@ export const userBlockWorker = (
         token: null,
         type: null,
       }
-      const { data } = await dispatch(useHttp(options))
-      await setStorage(data)
-      await setStorage(data)
-      await dispatch(autoLogin() as any)
+      await dispatch(useHttp(options))
     } catch (e) {
       console.log(e)
     }
@@ -132,10 +129,7 @@ export const userDeleteWorker = (_id: string, userId: string) => {
         token: null,
         type: null,
       }
-      const { data } = await dispatch(useHttp(options))
-      console.log(data)
-      await setStorage(data)
-      await dispatch(autoLogin() as any)
+      await dispatch(useHttp(options))
     } catch (e) {
       console.log(e)
     }
