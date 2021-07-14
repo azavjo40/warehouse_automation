@@ -2,10 +2,10 @@ import { ActionGenerals } from "./interFace"
 import { IS_LOADING, SHOW_ALERT } from "./types"
 import { Dispatch } from "redux"
 import { LOCALSTORAGENAME } from "../../constants/index"
-
 export const setStorage = async (items: any) => {
   try {
-    await localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(items))
+    localStorage.removeItem(LOCALSTORAGENAME)
+    localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(items))
   } catch (e) {
     console.log(e)
   }
@@ -13,7 +13,7 @@ export const setStorage = async (items: any) => {
 
 export const getStorage = async () => {
   let storage: any = await JSON.parse(
-    localStorage.getItem(LOCALSTORAGENAME) || "hello"
+    localStorage.getItem(LOCALSTORAGENAME) as any
   )
   if (storage) return storage
 }

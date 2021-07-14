@@ -67,3 +67,40 @@ export const usersWorking = async (req: Request, res: Response) => {
     console.log(e)
   }
 }
+
+export const userBlockWorker = async (req: Request, res: Response) => {
+  try {
+    const { _id, permissions, userId } = req.body
+    const ubdate = {
+      permissions: JSON.stringify(permissions),
+    }
+    console.log(userId)
+    await User.findByIdAndUpdate({ _id }, { $set: ubdate }, { new: true })
+    const user: any = await User.findById({ _id: userId })
+
+    const jwtToken: string = token(user._id)
+    res
+      .status(200)
+      .json({ user, token: `Bearer ${jwtToken}`, userId: user._id })
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const userdeleteWorker = async (req: Request, res: Response) => {
+  try {
+    const { _id, userId } = req.body
+    await User.deleteOne({ _id })
+    const user: any = await User.findById({ _id: userId })
+    const jwtToken: string = token(user._id)
+    if (_id === userId) {
+      res.status(400).json({ message: "No worker !" })
+    } else {
+      res
+        .status(200)
+        .json({ user, token: `Bearer ${jwtToken}`, userId: user._id })
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
