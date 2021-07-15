@@ -9,9 +9,9 @@ import {
   UserWorking,
   HistoryProduct,
 } from "../pages/index"
-import { getStorage } from "../utils/index"
-import { PropsRouter } from "./interface"
-export const useRouter: React.FC<PropsRouter> = ({ isAuthUser }) => {
+import { getStorage } from "../utils/storage"
+import { IPropsRouter } from "../interface/router"
+export const useRouter: React.FC<IPropsRouter> = ({ isAuthUser }) => {
   const storage: any = getStorage()
   if (isAuthUser && storage.user.permissions === "false") {
     return (
@@ -30,9 +30,13 @@ export const useRouter: React.FC<PropsRouter> = ({ isAuthUser }) => {
         <Route path='/history/product' exact>
           <HistoryProduct />
         </Route>
-        <Route path='/user/working' exact>
-          <UserWorking />
-        </Route>
+
+        {storage.user.position !== "storekeeper" && (
+          <Route path='/user/working' exact>
+            <UserWorking />
+          </Route>
+        )}
+
         <Route path='/dispatch/product' exact>
           <DispatchProduct />
         </Route>

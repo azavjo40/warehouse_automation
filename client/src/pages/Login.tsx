@@ -1,11 +1,11 @@
 import React from "react"
 import { LoginForm } from "../components/index"
-import { TypesFormLogin } from "../components/auth/interface"
+import { ITypesFormLogin } from "../interface/auth"
 import { useDispatch } from "react-redux"
 import { authLogin } from "../redux/auth/authAcsions"
 export const Login: React.FC = () => {
   const dispatch = useDispatch()
-  const postLogin = (form: TypesFormLogin): void => {
+  const postLogin = (form: ITypesFormLogin): void => {
     dispatch(authLogin(form))
   }
 

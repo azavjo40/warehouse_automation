@@ -33,7 +33,9 @@ export function useHttp(options: any): any {
       if (options.type && data) {
         dispatch({ type: options.type, payload: data })
       }
-      dispatch(showAlert(data.message))
+      if (data.message) {
+        dispatch(showAlert(data.message))
+      }
       dispatch(showLoader(false))
       return { data }
     } catch (e) {

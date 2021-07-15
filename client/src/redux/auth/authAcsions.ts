@@ -1,10 +1,7 @@
 import { Dispatch } from "redux"
-import {
-  TypesFormRegister,
-  TypesFormLogin,
-} from ".././/..//components/auth/interface"
+import { ITypesFormRegister, ITypesFormLogin } from "../../interface/auth"
 import { useHttp } from "../hooks/useHttp"
-import { getStorage, setStorage } from "../generals/generalAcsions"
+import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME } from "../../constants"
 
@@ -21,7 +18,7 @@ export const authUser = (isAuthUser: boolean) => {
 export function autoLogin() {
   return async (dispatch: Dispatch) => {
     try {
-      const storage: any = await getStorage()
+      const storage: any = getStorage()
       if (storage.token) dispatch(authUser(true) as any)
       else dispatch(authUser(false) as any)
     } catch (e) {
@@ -30,7 +27,7 @@ export function autoLogin() {
   }
 }
 
-export function authRegister(form: TypesFormRegister) {
+export function authRegister(form: ITypesFormRegister) {
   return async (dispatch: Dispatch) => {
     try {
       const options = {
@@ -50,7 +47,7 @@ export function authRegister(form: TypesFormRegister) {
   }
 }
 
-export function authLogin(form: TypesFormLogin) {
+export function authLogin(form: ITypesFormLogin) {
   return async (dispatch: Dispatch) => {
     try {
       const options = {
@@ -81,12 +78,13 @@ export function logout() {
 export const usersWorking = () => {
   return async (dispatch: Dispatch) => {
     try {
+      const storage: any = await getStorage()
       const options = {
         url: "/api/auth/users/working",
         method: "GET",
         body: null,
         file: null,
-        token: null,
+        token: storage.token,
         type: USERS_WORLING,
       }
       await dispatch(useHttp(options))
@@ -103,15 +101,17 @@ export const userBlockWorker = (
 ) => {
   return async (dispatch: Dispatch) => {
     try {
+      const storage: any = await getStorage()
       const options = {
         url: "/api/auth/user/change/working",
         method: "POST",
         body: { _id, permissions, userId },
         file: null,
-        token: null,
+        token: storage.token,
         type: null,
       }
       await dispatch(useHttp(options))
+      dispatch(usersWorking() as any)
     } catch (e) {
       console.log(e)
     }
@@ -121,15 +121,17 @@ export const userBlockWorker = (
 export const userDeleteWorker = (_id: string, userId: string) => {
   return async (dispatch: Dispatch) => {
     try {
+      const storage: any = await getStorage()
       const options = {
         url: "/api/auth/user/delete/working",
         method: "POST",
         body: { _id, userId },
         file: null,
-        token: null,
+        token: storage.token,
         type: null,
       }
       await dispatch(useHttp(options))
+      dispatch(usersWorking() as any)
     } catch (e) {
       console.log(e)
     }

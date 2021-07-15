@@ -1,11 +1,11 @@
 import React from "react"
-import { TypesFormRegister } from "../components/auth/interface"
+import { ITypesFormRegister } from "../interface/auth"
 import { RegisterForm } from "../components/index"
 import { useDispatch } from "react-redux"
 import { authRegister } from "../redux/auth/authAcsions"
 export const Register: React.FC = () => {
   const dispatch = useDispatch()
-  const postRegister = (form: TypesFormRegister): void => {
+  const postRegister = (form: ITypesFormRegister): void => {
     dispatch(authRegister(form))
   }
 

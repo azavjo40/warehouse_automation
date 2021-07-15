@@ -2,9 +2,9 @@ import React from "react"
 import { useDispatch } from "react-redux"
 import { NavLink } from "react-router-dom"
 import { logout } from "../../redux/auth/authAcsions"
-import { NavbarProps } from "./interface"
-import { getStorage } from "../../utils/index"
-export const Navbar: React.FC<NavbarProps> = ({ isAuthUser }) => {
+import { INavbarProps } from "../../interface/navbar"
+import { getStorage } from "../../utils/storage"
+export const Navbar: React.FC<INavbarProps> = ({ isAuthUser }) => {
   const dispatch = useDispatch()
   const storage: any = getStorage()
   if (isAuthUser && storage.user) {
@@ -26,9 +26,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isAuthUser }) => {
                 <li>
                   <NavLink to='/dispatch/product'>Dispatch Product</NavLink>
                 </li>
-                <li>
-                  <NavLink to='/user/working'>User</NavLink>
-                </li>
+                {storage.user.position !== "storekeeper" && (
+                  <li>
+                    <NavLink to='/user/working'>User</NavLink>
+                  </li>
+                )}
                 <li>
                   <NavLink to='/history/product'>History</NavLink>
                 </li>

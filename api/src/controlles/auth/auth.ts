@@ -41,6 +41,9 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body
 
     const user: any = await User.findOne({ email })
+    if (!user) {
+      return res.status(400).json({ message: "You don not have registration" })
+    }
 
     const isMatch: boolean = await compare(password, user.password)
 

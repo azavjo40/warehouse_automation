@@ -1,5 +1,5 @@
 import React from "react"
-import { getStorage } from "../../utils/index"
+import { getStorage } from "../../utils/storage"
 export const CartNoPermissionsUser: React.FC = () => {
   const storage: any = getStorage()
   return (

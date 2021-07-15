@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { FormPropsLogin } from "./interface"
+import { IFormPropsLogin } from "../../interface/auth"
 
-export const LoginForm: React.FC<FormPropsLogin> = ({ postLogin }) => {
+export const LoginForm: React.FC<IFormPropsLogin> = ({ postLogin }) => {
   const [form, setForm] = useState({
     email: "",
     password: "",

@@ -1,6 +1,8 @@
 import React, { useState } from "react"
-import { FormPropsRegister } from "./interface"
-export const RegisterForm: React.FC<FormPropsRegister> = ({ postRegister }) => {
+import { IFormPropsRegister } from "../../interface/auth"
+export const RegisterForm: React.FC<IFormPropsRegister> = ({
+  postRegister,
+}) => {
   const [form, setForm] = useState({
     name: "",
     last_name: "",

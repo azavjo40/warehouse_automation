@@ -1,12 +1,12 @@
 import { IS_LOADING, SHOW_ALERT } from "./types"
-import { IsLoadingState, ActionGenerals } from "./interFace"
+import { IIsLoadingState, IActionGenerals } from "../../interface/generals"
 const initialState = {
   isloading: false,
-  alert: false,
+  alert: "",
 }
 export const generalReducer = (
-  state: IsLoadingState = initialState,
-  actoin: ActionGenerals
+  state: IIsLoadingState = initialState,
+  actoin: IActionGenerals
 ) => {
   switch (actoin.type) {
     case IS_LOADING:

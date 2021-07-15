@@ -36,3 +36,11 @@ code {
 .working {
   margin-top: 1rem;
 }
+
+.alert {
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  z-index: 100;
+  color: white;
+}

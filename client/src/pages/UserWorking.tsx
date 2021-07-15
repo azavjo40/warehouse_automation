@@ -1,31 +1,30 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CartUserProduct } from "../components/index"
+import { CartUserWorking } from "../components/index"
 import {
   userBlockWorker,
   userDeleteWorker,
   usersWorking,
 } from "../redux/auth/authAcsions"
-import { getStorage } from "../utils/index"
+import { getStorage } from "../utils/storage"
 
 export const UserWorking: React.FC = () => {
   const storage: any = getStorage()
   const working: any = useSelector<any>(state => state.auth.users)
+
   const dispatch = useDispatch()
 
-  useEffect(() => dispatch(usersWorking()) as any, [dispatch])
+  useEffect(() => dispatch(usersWorking() as any), [dispatch])
 
   function deleteWorker(_id: string) {
     const confirm: boolean = window.confirm("Are you sure ?")
     if (confirm) {
       dispatch(userDeleteWorker(_id, storage.userId))
-      dispatch(usersWorking())
     }
   }
 
   function blockWorker(_id: string, permissions: boolean) {
     dispatch(userBlockWorker(_id, permissions, storage.userId))
-    dispatch(usersWorking())
   }
   return (
     <div className='container'>
@@ -35,7 +34,7 @@ export const UserWorking: React.FC = () => {
         </li>
         {working.map((item: any) => {
           return (
-            <CartUserProduct
+            <CartUserWorking
               key={item._id}
               item={item}
               deleteWorker={deleteWorker}

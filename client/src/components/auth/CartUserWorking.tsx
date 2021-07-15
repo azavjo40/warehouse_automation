@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react"
-
-export const CartUserProduct: React.FC<any> = ({
+import { IPropsUserWorking } from "../../interface/auth"
+export const CartUserWorking: React.FC<IPropsUserWorking> = ({
   item,
   deleteWorker,
   blockWorker,
 }) => {
   const [checked, setChecked] = useState<boolean>()
-  useEffect(() => {
-    if (item.permissions === "false") setChecked(false)
-    else setChecked(true)
-  }, [checked, item.permissions])
+  const check = JSON.parse(item.permissions)
+  useEffect(() => setChecked(check), [check])
 
   const changehandler = (): void => {
     const confirm: boolean = window.confirm("Are you sure ?")
