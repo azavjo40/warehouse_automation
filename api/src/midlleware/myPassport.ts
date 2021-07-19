@@ -1,20 +1,16 @@
 import { mongoConfig } from "../config-ts/default"
-const mongoose = require("mongoose")
-const User = mongoose.model("User")
-const JwtStrategy = require("passport-jwt").Strategy
-const ExtractJwt = require("passport-jwt").ExtractJwt
+import User from "../models/auth"
+import { Strategy, ExtractJwt } from "passport-jwt"
 const option = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: mongoConfig.mongoUri,
+  secretOrKey: mongoConfig.jwtSecret,
 }
 
 export default (passport: any) => {
   passport.use(
-    new JwtStrategy(option, async (payload: any, done: any) => {
+    new Strategy(option, async (payload: any, done: any) => {
       try {
-        console.log(payload)
         const user = await User.findById(payload.userId).select("email id")
-        console.log(user)
         if (user) {
           done(null, user)
         } else {

@@ -4,7 +4,6 @@ import { useHttp } from "../hooks/useHttp"
 import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME } from "../../constants"
-
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
     try {
@@ -19,11 +18,18 @@ export function autoLogin() {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = getStorage()
-      if (storage.token) dispatch(authUser(true) as any)
+      if (storage.data.token) dispatch(authUser(true) as any)
       else dispatch(authUser(false) as any)
     } catch (e) {
       console.log(e)
     }
+  }
+}
+
+export const autoSavStorage = (data: any) => {
+  return async (dispatch: Dispatch) => {
+    setStorage(data)
+    dispatch(autoLogin() as any)
   }
 }
 
@@ -39,8 +45,7 @@ export function authRegister(form: ITypesFormRegister) {
         type: null,
       }
       const { data } = await dispatch(useHttp(options))
-      await setStorage(data)
-      await dispatch(autoLogin() as any)
+      dispatch(autoSavStorage(data) as any)
     } catch (e) {
       console.log(e)
     }
@@ -59,8 +64,8 @@ export function authLogin(form: ITypesFormLogin) {
         type: null,
       }
       const { data } = await dispatch(useHttp(options))
-      await setStorage(data)
-      await dispatch(autoLogin() as any)
+      console.log(data)
+      dispatch(autoSavStorage(data) as any)
     } catch (e) {
       console.log(e)
     }
@@ -84,7 +89,7 @@ export const usersWorking = () => {
         method: "GET",
         body: null,
         file: null,
-        token: storage.token,
+        token: storage.data.token,
         type: USERS_WORLING,
       }
       await dispatch(useHttp(options))
@@ -107,7 +112,7 @@ export const userBlockWorker = (
         method: "POST",
         body: { _id, permissions, userId },
         file: null,
-        token: storage.token,
+        token: storage.data.token,
         type: null,
       }
       await dispatch(useHttp(options))
@@ -127,11 +132,29 @@ export const userDeleteWorker = (_id: string, userId: string) => {
         method: "POST",
         body: { _id, userId },
         file: null,
-        token: storage.token,
+        token: storage.data.token,
         type: null,
       }
       await dispatch(useHttp(options))
       dispatch(usersWorking() as any)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const refresh_token = (socket: any) => {
+  return async (dispatch: Dispatch) => {
+    const storage: any = await getStorage()
+    try {
+      if (storage.data.userId) {
+        socket.emit("user/id", { userId: storage.data.userId })
+        socket.on("refresh/token", async ({ data }: any) => {
+          if (data) {
+            dispatch(autoSavStorage({ data }) as any)
+          }
+        })
+      }
     } catch (e) {
       console.log(e)
     }

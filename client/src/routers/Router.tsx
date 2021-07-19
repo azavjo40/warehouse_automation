@@ -13,25 +13,25 @@ import { getStorage } from "../utils/storage"
 import { IPropsRouter } from "../interface/router"
 export const useRouter: React.FC<IPropsRouter> = ({ isAuthUser }) => {
   const storage: any = getStorage()
-  if (isAuthUser && storage.user.permissions === "false") {
+  if (isAuthUser && storage.data.permissions === "false") {
     return (
       <Switch>
-        <Route path={`/${storage.user.name}`} exact>
+        <Route path={`/${storage.data.name}`} exact>
           <NoPermissionsUser />
         </Route>
-        <Redirect to={`/${storage.user.name}`} />
+        <Redirect to={`/${storage.data.name}`} />
       </Switch>
     )
   }
 
-  if (isAuthUser && storage.user.permissions === "true") {
+  if (isAuthUser && storage.data.permissions === "true") {
     return (
       <Switch>
         <Route path='/history/product' exact>
           <HistoryProduct />
         </Route>
 
-        {storage.user.position !== "storekeeper" && (
+        {storage.data.position !== "storekeeper" && (
           <Route path='/user/working' exact>
             <UserWorking />
           </Route>
@@ -40,6 +40,7 @@ export const useRouter: React.FC<IPropsRouter> = ({ isAuthUser }) => {
         <Route path='/dispatch/product' exact>
           <DispatchProduct />
         </Route>
+
         <Route path={`/shipment/product`} exact>
           <ShipmentProduct />
         </Route>

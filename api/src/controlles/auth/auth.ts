@@ -24,11 +24,18 @@ export const register = async (req: Request, res: Response) => {
     await user.save()
 
     const jwtToken: string = token(user._id)
-
-    res.status(201).json({
-      user,
+    const data = {
+      date: user.date,
+      email: user.email,
+      last_name: user.last_name,
+      name: user.name,
+      permissions: user.permissions,
+      position: user.position,
       token: `Bearer ${jwtToken}`,
       userId: user._id,
+    }
+    res.status(201).json({
+      data,
       message: "User created",
     })
   } catch (e) {
@@ -54,9 +61,19 @@ export const login = async (req: Request, res: Response) => {
     }
 
     const jwtToken: string = token(user._id)
-    res
-      .status(200)
-      .json({ user, token: `Bearer ${jwtToken}`, userId: user._id })
+
+    const data = {
+      date: user.date,
+      email: user.email,
+      last_name: user.last_name,
+      name: user.name,
+      permissions: user.permissions,
+      position: user.position,
+      token: `Bearer ${jwtToken}`,
+      userId: user._id,
+    }
+
+    res.status(200).json({ data })
   } catch (e) {
     console.log(e)
   }
