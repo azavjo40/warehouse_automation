@@ -11,11 +11,8 @@ export default (passport: any) => {
     new Strategy(option, async (payload: any, done: any) => {
       try {
         const user = await User.findById(payload.userId).select("email id")
-        if (user) {
-          done(null, user)
-        } else {
-          done(null, false)
-        }
+        if (user) done(null, user)
+        else done(null, false)
       } catch (e) {
         console.log(e)
       }

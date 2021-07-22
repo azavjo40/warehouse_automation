@@ -6,11 +6,12 @@ import "./App.css"
 import { io } from "socket.io-client"
 import { useDispatch, useSelector } from "react-redux"
 import { autoLogin, refresh_token } from "./redux/auth/authAcsions"
+import { getStorage } from "./utils/storage"
 const App: React.FC = () => {
+  const storage: any = getStorage()
   const socket = io("http://localhost:5000", {
-    reconnectionDelayMax: 10000,
     auth: {
-      token: "123",
+      token: storage.data.token,
     },
   })
   const isAuthUser = useSelector((state: any) => state.auth.isAuthUser)
