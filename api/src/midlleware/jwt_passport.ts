@@ -1,12 +1,12 @@
 import { mongoConfig } from "../config-ts/default"
 import User from "../models/auth"
 import { Strategy, ExtractJwt } from "passport-jwt"
-const option = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: mongoConfig.jwtSecret,
-}
 
 export default (passport: any) => {
+  const option = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: mongoConfig.jwtSecret,
+  }
   passport.use(
     new Strategy(option, async (payload: any, done: any) => {
       try {

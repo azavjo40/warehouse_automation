@@ -6,24 +6,26 @@ export const validation = (req: Request, res: Response, next: NextFunction) => {
   try {
     if (url === "/register") {
       if (!name) {
-        res.json({ message: "Fill out the forms name" })
+        res.status(300).json({ message: "Fill out the forms name" })
       } else if (!last_name) {
-        res.json({ message: "Fill out the forms last_name" })
+        res.status(300).json({ message: "Fill out the forms last_name" })
       } else if (!email) {
-        res.json({ message: "Fill out the forms email" })
+        res.status(300).json({ message: "Fill out the forms email" })
       } else if (pass.length < 6) {
-        res.json({ message: "Password must be more than 6 characters" })
+        res
+          .status(300)
+          .json({ message: "Password must be more than 6 characters" })
       } else if (!position) {
-        res.json({ message: "Fill out the forms position" })
+        res.status(300).json({ message: "Fill out the forms position" })
       } else {
         next()
       }
     }
     if (url === "/login") {
       if (!email) {
-        res.json({ message: "Fill out the forms email" })
+        res.status(300).json({ message: "Fill out the forms email" })
       } else if (pass.length < 6) {
-        res.json({ message: "Fill out the forms password" })
+        res.status(300).json({ message: "Fill out the forms password" })
       } else {
         next()
       }

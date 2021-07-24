@@ -26,6 +26,7 @@ async function start() {
       useCreateIndex: true,
       useFindAndModify: false,
     })
+
     http.listen(PORT, () =>
       console.log(`App has been started on port ${PORT}...`)
     )

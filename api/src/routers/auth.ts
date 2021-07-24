@@ -7,6 +7,7 @@ import {
   userBlockWorker,
   userdeleteWorker,
 } from "../controlles/auth/auth"
+import { permissionsUser } from "../midlleware/auth/permissionsUser"
 const router = Router()
 import { validation, chefsCheck } from "../midlleware/index"
 router.post("/register", validation, chefsCheck, register)
@@ -18,11 +19,13 @@ router.get(
 )
 router.post(
   "/user/change/working",
+  permissionsUser,
   passport.authenticate("jwt", { session: false }),
   userBlockWorker
 )
 router.post(
   "/user/delete/working",
+  permissionsUser,
   passport.authenticate("jwt", { session: false }),
   userdeleteWorker
 )

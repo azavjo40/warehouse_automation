@@ -1,5 +1,10 @@
 import { Dispatch } from "redux"
-import { ITypesFormRegister, ITypesFormLogin } from "../../interface/auth"
+import {
+  ITypesFormRegister,
+  ITypesFormLogin,
+  // IUser,
+  // IAnswerServer,
+} from "../../interface/auth"
 import { useHttp } from "../hooks/useHttp"
 import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
@@ -36,7 +41,7 @@ export const autoSavStorage = (data: any) => {
 export function authRegister(form: ITypesFormRegister) {
   return async (dispatch: Dispatch) => {
     try {
-      const options = {
+      const options: any = {
         url: "/api/auth/register",
         method: "POST",
         body: form,
@@ -55,7 +60,7 @@ export function authRegister(form: ITypesFormRegister) {
 export function authLogin(form: ITypesFormLogin) {
   return async (dispatch: Dispatch) => {
     try {
-      const options = {
+      const options: any = {
         url: "/api/auth/login",
         method: "POST",
         body: form,
@@ -84,7 +89,7 @@ export const usersWorking = () => {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = await getStorage()
-      const options = {
+      const options: any = {
         url: "/api/auth/users/working",
         method: "GET",
         body: null,
@@ -107,7 +112,7 @@ export const userBlockWorker = (
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = await getStorage()
-      const options = {
+      const options: any = {
         url: "/api/auth/user/change/working",
         method: "POST",
         body: { _id, permissions, userId },
@@ -127,7 +132,7 @@ export const userDeleteWorker = (_id: string, userId: string) => {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = await getStorage()
-      const options = {
+      const options: any = {
         url: "/api/auth/user/delete/working",
         method: "POST",
         body: { _id, userId },
@@ -148,8 +153,8 @@ export const refresh_token = (socket: any) => {
     const storage: any = await getStorage()
     try {
       if (storage.data.userId) {
-        socket.emit("user/id", { userId: storage.data.userId })
-        socket.on("refresh/token", async ({ data }: any) => {
+        socket.emit("refresh/token", { userId: storage.data.userId })
+        socket.on(`${storage.data.userId}`, async ({ data }: any) => {
           if (data) {
             dispatch(autoSavStorage({ data }) as any)
           }

@@ -7,13 +7,18 @@ import { io } from "socket.io-client"
 import { useDispatch, useSelector } from "react-redux"
 import { autoLogin, refresh_token } from "./redux/auth/authAcsions"
 import { getStorage } from "./utils/storage"
+
 const App: React.FC = () => {
   const storage: any = getStorage()
-  const socket = io("http://localhost:5000", {
-    auth: {
-      token: storage.data.token,
-    },
-  })
+  let socket: any
+  if (storage.data) {
+    socket = io("http://localhost:5000", {
+      auth: {
+        token: storage.data.token,
+      },
+    })
+  }
+
   const isAuthUser = useSelector((state: any) => state.auth.isAuthUser)
   const alert = useSelector((state: any) => state.generals.alert)
   const dispatch = useDispatch()
