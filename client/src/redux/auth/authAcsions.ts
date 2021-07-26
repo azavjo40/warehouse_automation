@@ -1,14 +1,10 @@
 import { Dispatch } from "redux"
-import {
-  ITypesFormRegister,
-  ITypesFormLogin,
-  // IUser,
-  // IAnswerServer,
-} from "../../interface/auth"
+import { ITypesFormRegister, ITypesFormLogin } from "../../interface/auth"
 import { useHttp } from "../hooks/useHttp"
 import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME } from "../../constants"
+
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
     try {
@@ -23,8 +19,10 @@ export function autoLogin() {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = getStorage()
-      if (storage.data.token) dispatch(authUser(true) as any)
-      else dispatch(authUser(false) as any)
+      if (storage.data) {
+        if (storage.data.token) dispatch(authUser(true) as any)
+        else dispatch(authUser(false) as any)
+      }
     } catch (e) {
       console.log(e)
     }
@@ -69,7 +67,6 @@ export function authLogin(form: ITypesFormLogin) {
         type: null,
       }
       const { data } = await dispatch(useHttp(options))
-      console.log(data)
       dispatch(autoSavStorage(data) as any)
     } catch (e) {
       console.log(e)
@@ -152,7 +149,7 @@ export const refresh_token = (socket: any) => {
   return async (dispatch: Dispatch) => {
     const storage: any = await getStorage()
     try {
-      if (storage.data.userId) {
+      if (storage.data) {
         socket.emit("refresh/token", { userId: storage.data.userId })
         socket.on(`${storage.data.userId}`, async ({ data }: any) => {
           if (data) {

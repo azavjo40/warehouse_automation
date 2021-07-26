@@ -5,6 +5,8 @@ import { CartNoPermissionsUser } from "./noPermissionsUser/CartNoPermissionsUser
 import { CarthistoryProduct } from "./historyProduct/CartHistoryProduct"
 import { CartUserWorking } from "./auth/CartUserWorking"
 import { Alert } from "./generals/Alert"
+import { CartReceiptProduct } from "./product/CartReceiptProduct"
+import { CartDispatchProduct } from "./product/CartDispatchProduct"
 export {
   Navbar,
   RegisterForm,
@@ -13,4 +15,6 @@ export {
   CarthistoryProduct,
   CartUserWorking,
   Alert,
+  CartReceiptProduct,
+  CartDispatchProduct,
 }

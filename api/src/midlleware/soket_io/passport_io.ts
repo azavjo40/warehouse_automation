@@ -1,4 +1,4 @@
-import User from "../../models/auth"
+import { User } from "../../models/index"
 import jwtDecode from "jwt-decode"
 
 export const passport_io = async (socket: any, next: any) => {

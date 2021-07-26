@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import User from "../../models/auth"
+import { User } from "../../models/index"
 export const chefsCheck = async (
   req: Request,
   res: Response,

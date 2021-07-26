@@ -1,4 +1,4 @@
-import User from "../../models/auth"
+import { User } from "../../models/index"
 import { Request, Response } from "express"
 import { token } from "../../utils/token"
 import { hash, compare } from "bcryptjs"
@@ -103,7 +103,7 @@ export const userBlockWorker = async (req: Request, res: Response) => {
       res.status(400).json({ message: "You con not block yourself !" })
     } else {
       await User.findByIdAndUpdate({ _id }, { $set: ubdate }, { new: true })
-      res.status(200).json({ message: "Block worker" })
+      res.status(200).json({ message: "Block worker are unlocked !" })
     }
   } catch (e) {
     console.log(e)

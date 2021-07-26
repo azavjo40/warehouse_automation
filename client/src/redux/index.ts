@@ -1,3 +1,4 @@
 import { generalReducer } from "./generals/generalReducer"
 import { authReducer } from "./auth/authReducer"
-export { generalReducer, authReducer }
+import { productReducer } from "./product/productReducer"
+export { generalReducer, authReducer, productReducer }

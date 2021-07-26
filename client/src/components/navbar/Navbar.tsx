@@ -21,7 +21,7 @@ export const Navbar: React.FC<INavbarProps> = ({ isAuthUser }) => {
             {storage.data.permissions === "true" && (
               <>
                 <li>
-                  <NavLink to={`/shipment/product`}>Shipment Product</NavLink>
+                  <NavLink to={`/receipt/product`}>Receipt Product</NavLink>
                 </li>
                 <li>
                   <NavLink to='/dispatch/product'>Dispatch Product</NavLink>

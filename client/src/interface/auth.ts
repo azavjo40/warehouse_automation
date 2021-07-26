@@ -18,7 +18,7 @@ export interface IFormPropsRegister {
   postRegister: (form: ITypesFormRegister) => void
 }
 
-export interface IInitialStateAuth {
+export interface IAuthState {
   isAuthUser: boolean
   users: Array<[]>
 }

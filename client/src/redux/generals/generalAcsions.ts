@@ -1,11 +1,21 @@
-import { IActionGenerals } from "../../interface/generals"
-import { IS_LOADING, SHOW_ALERT } from "./types"
+import { IActionGenerals, IClearForm } from "../../interface/generals"
+import { IS_LOADING, SHOW_ALERT, CLEAR_FORM } from "./types"
 import { Dispatch } from "redux"
 
 export const showLoader = (bool: boolean) => {
   return (dispatch: Dispatch<IActionGenerals>): void => {
     try {
       dispatch({ type: IS_LOADING, payload: bool })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const ClearForm = (bool: boolean) => {
+  return (dispatch: Dispatch<IClearForm>): void => {
+    try {
+      dispatch({ type: CLEAR_FORM, payload: bool })
     } catch (e) {
       console.log(e)
     }

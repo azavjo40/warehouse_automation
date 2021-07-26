@@ -1,5 +1,5 @@
 import { mongoConfig } from "../config-ts/default"
-import User from "../models/auth"
+import { User } from "../models/index"
 import { Strategy, ExtractJwt } from "passport-jwt"
 
 export default (passport: any) => {

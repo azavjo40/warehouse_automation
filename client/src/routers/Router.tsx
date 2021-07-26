@@ -4,7 +4,7 @@ import {
   Login,
   Register,
   DispatchProduct,
-  ShipmentProduct,
+  ReceiptProduct,
   NoPermissionsUser,
   UserWorking,
   HistoryProduct,
@@ -41,10 +41,10 @@ export const useRouter: React.FC<IPropsRouter> = ({ isAuthUser }) => {
           <DispatchProduct />
         </Route>
 
-        <Route path={`/shipment/product`} exact>
-          <ShipmentProduct />
+        <Route path={`/receipt/product`} exact>
+          <ReceiptProduct />
         </Route>
-        <Redirect to={`/shipment/product`} />
+        <Redirect to={`/receipt/product`} />
       </Switch>
     )
   } else {

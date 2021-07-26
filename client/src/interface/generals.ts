@@ -1,7 +1,10 @@
-export interface IIsLoadingState {
+export interface IGeneralsState {
   isloading: boolean
-  alert: any
+  alert: string
+  clearForm: boolean
 }
+
 export type IAlert = { type: string; payload: any }
 export type IIsloading = { type: string; payload: boolean }
-export type IActionGenerals = IAlert | IIsloading
+export type IClearForm = { type: string; payload: boolean }
+export type IActionGenerals = IAlert | IIsloading | IClearForm

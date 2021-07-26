@@ -1,4 +1,4 @@
-import { showAlert, showLoader } from "../generals/generalAcsions"
+import { ClearForm, showAlert, showLoader } from "../generals/generalAcsions"
 import { Dispatch } from "redux"
 
 export function useHttp(options: any): any {
@@ -28,14 +28,19 @@ export function useHttp(options: any): any {
       }
 
       const response = await fetch(options.url, requestOptions)
+
       const data = await response.json()
+
+      dispatch(ClearForm(response.ok))
 
       if (options.type && data) {
         dispatch({ type: options.type, payload: data })
       }
+
       if (data.message) {
         dispatch(showAlert(data.message))
       }
+
       dispatch(showLoader(false))
       return { data }
     } catch (e) {

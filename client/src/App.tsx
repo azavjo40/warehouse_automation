@@ -23,6 +23,7 @@ const App: React.FC = () => {
   const alert = useSelector((state: any) => state.generals.alert)
   const dispatch = useDispatch()
   useEffect(() => dispatch(autoLogin() as any), [dispatch])
+
   useEffect(() => dispatch(refresh_token(socket) as any), [dispatch, socket])
   const router = useRouter({ isAuthUser })
   return (

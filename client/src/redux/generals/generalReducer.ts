@@ -1,11 +1,12 @@
-import { IS_LOADING, SHOW_ALERT } from "./types"
-import { IIsLoadingState, IActionGenerals } from "../../interface/generals"
-const initialState = {
+import { IS_LOADING, SHOW_ALERT, CLEAR_FORM } from "./types"
+import { IGeneralsState, IActionGenerals } from "../../interface/generals"
+const initialState: IGeneralsState = {
   isloading: false,
   alert: "",
+  clearForm: false,
 }
 export const generalReducer = (
-  state: IIsLoadingState = initialState,
+  state: IGeneralsState = initialState,
   actoin: IActionGenerals
 ) => {
   switch (actoin.type) {
@@ -13,6 +14,8 @@ export const generalReducer = (
       return { ...state, isloading: actoin.payload }
     case SHOW_ALERT:
       return { ...state, alert: actoin.payload }
+    case CLEAR_FORM:
+      return { ...state, form: actoin.payload }
     default:
       return state
   }

@@ -1,12 +1,12 @@
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
-import { IInitialStateAuth, IAcsionAuth } from "../../interface/auth"
-const initialState = {
+import { IAuthState, IAcsionAuth } from "../../interface/auth"
+const initialState: IAuthState = {
   isAuthUser: false,
   users: [],
 }
 
 export const authReducer = (
-  state: IInitialStateAuth = initialState,
+  state: IAuthState = initialState,
   actoin: IAcsionAuth
 ) => {
   switch (actoin.type) {

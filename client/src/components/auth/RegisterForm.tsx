@@ -1,8 +1,10 @@
 import React, { useState } from "react"
+import { useSelector } from "react-redux"
 import { IFormPropsRegister } from "../../interface/auth"
 export const RegisterForm: React.FC<IFormPropsRegister> = ({
   postRegister,
 }) => {
+  const clerForm = useSelector((state: any) => state.generals.clearForm)
   const [form, setForm] = useState({
     name: "",
     last_name: "",
@@ -21,13 +23,15 @@ export const RegisterForm: React.FC<IFormPropsRegister> = ({
   const autoRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     postRegister(form)
-    setForm({
-      name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      position: "",
-    })
+    if (clerForm) {
+      setForm({
+        name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        position: "",
+      })
+    }
   }
 
   return (

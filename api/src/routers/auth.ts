@@ -19,14 +19,14 @@ router.get(
 )
 router.post(
   "/user/change/working",
-  permissionsUser,
   passport.authenticate("jwt", { session: false }),
+  permissionsUser,
   userBlockWorker
 )
 router.post(
   "/user/delete/working",
-  permissionsUser,
   passport.authenticate("jwt", { session: false }),
+  permissionsUser,
   userdeleteWorker
 )
 export default router

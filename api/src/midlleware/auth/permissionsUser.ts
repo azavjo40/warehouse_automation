@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import User from "../../models/auth"
+import { User } from "../../models/index"
 import { IUser } from "../../interface/auth"
 export const permissionsUser = async (
   req: Request,
