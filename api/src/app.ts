@@ -2,11 +2,17 @@ import express, { Application } from "express"
 import { createServer } from "http"
 import { connect } from "mongoose"
 import { mongoConfig } from "./config-ts/default"
-import { routerAuth, socket_io, routerProduct } from "./routers/index"
+import {
+  routerAuth,
+  socket_io,
+  routerProduct,
+  routerGenerals,
+} from "./routers/index"
 import bodyParser from "body-parser"
 import cors from "cors"
 import passport from "passport"
 import jwt_passport from "./midlleware/jwt_passport"
+import { test } from "./test"
 const app: Application = express()
 const http = createServer(app)
 socket_io(http)()
@@ -16,7 +22,9 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use("/api/auth", routerAuth)
+app.use("/api", routerGenerals)
 app.use("/api", routerProduct)
+test()
 async function start() {
   const PORT: any = process.env.PORT || mongoConfig.port
   try {
