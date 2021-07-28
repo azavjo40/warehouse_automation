@@ -44,38 +44,40 @@ export function showAlert(text: string) {
   }
 }
 
-export const autoCreateKey = () => {
+export function autoCreateKey() {
   return async (dispatch: Dispatch<IClearForm>) => {
     try {
       const storage = getStorage()
-      const secretKey = JSON.parse(localStorage.getItem("secret_key") as any)
-      if (secretKey) {
-        return { secretKey }
-      } else {
-        const userId = storage.data.userId
-        const options: any = {
-          url: "/api/auto/create/key",
-          method: "POST",
-          body: userId,
-          file: null,
-          token: storage.data.token,
-          type: null,
+      const userId = storage.data.userId
+      const options: any = {
+        url: "/api/auto/create/key",
+        method: "POST",
+        body: { userId },
+        file: null,
+        token: storage.data.token,
+        type: null,
+      }
+      await dispatch(useHttp(options))
+
+      const storageKey = JSON.parse(localStorage.getItem("secret_key") as any)
+      if (storageKey) {
+        return {
+          publicKey: storageKey.publicKey,
+          privateKey: storageKey.privateKey,
         }
+      } else {
         const { data } = await dispatch(useHttp(options))
-        if (data.publicK) {
-          const key = new NodeRSA({ b: 1024 })
-          const public_key = key.exportKey("public")
-          const private_key = key.exportKey("private")
-          const publicK = new NodeRSA(public_key)
-          const privateK = new NodeRSA(private_key)
-
-          localStorage.setItem(
-            "secret_key",
-            JSON.stringify({ publicK, privateK })
-          )
-          const secretKey = { publicK, privateK }
-
-          return { secretKey }
+        if (data.publicKey) {
+          const newKey = new NodeRSA({ b: 1024 })
+          const publicKey = newKey.exportKey("public")
+          const privateKey = newKey.exportKey("private")
+          const decryptKey = new NodeRSA(data.publicKey)
+          const keyString: string = JSON.stringify({ publicKey, privateKey })
+          localStorage.setItem("secret_key", keyString)
+          const clientKey = decryptKey.encrypt(keyString, "base64")
+          options.body = { userId, clientKey: clientKey }
+          await dispatch(useHttp(options))
+          return { publicKey, privateKey }
         }
       }
     } catch (e) {

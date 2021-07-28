@@ -5,7 +5,7 @@ const router = Router()
 
 router.post(
   "/auto/create/key",
-  passport.authenticate("jwt", { session: false }),
+  // passport.authenticate("jwt", { session: false }),
   autoCreateKey
 )
 

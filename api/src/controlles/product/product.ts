@@ -9,6 +9,7 @@ export const dispatch = async (req: Request, res: Response) => {
 
 export const receipt = async (req: Request, res: Response) => {
   try {
+    console.log(req.body)
   } catch (e) {
     console.log(e)
   }
