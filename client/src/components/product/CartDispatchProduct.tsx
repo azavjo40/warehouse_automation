@@ -1,11 +1,9 @@
 import React, { useState } from "react"
-import { useSelector } from "react-redux"
 import { getStorage } from "../../utils/storage"
 import { IFormPropsDispatchProduct } from "../../interface/product"
 export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
   dispatchHandler,
 }) => {
-  const clerForm = useSelector((state: any) => state.generals.clearForm)
   const storage = getStorage()
   const [form, setForm] = useState({
     purveyor: "www ua be co",
@@ -28,7 +26,7 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
   const autoRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatchHandler(form)
-    if (clerForm) {
+    setTimeout(() => {
       setForm({
         purveyor: "",
         driver: "",
@@ -39,7 +37,7 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
         sender_product: "",
         userId: "",
       })
-    }
+    }, 2000)
   }
 
   return (

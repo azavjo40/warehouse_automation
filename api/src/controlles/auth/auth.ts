@@ -117,7 +117,7 @@ export const userdeleteWorker = async (req: Request, res: Response) => {
       res.status(400).json({ message: "You con not delete yourself !" })
     } else {
       await User.deleteOne({ _id })
-      res.status(200).json({ message: "Delete worker" })
+      res.status(204).json({ message: "Delete worker" })
     }
   } catch (e) {
     console.log(e)
