@@ -7,28 +7,29 @@ import { getStorage } from "../../utils/storage"
 import { useHttp } from "../hooks/useHttp"
 
 const storage = getStorage()
-const userId = storage.data.userId
 const options: any = {
   url: null,
   method: null,
   body: null,
   file: null,
-  token: storage.data.token,
+  token: null,
   type: null,
 }
 
 export const postReceipt = (form: ITypesFormProduct) => {
   return async (dispatch: Dispatch<any>) => {
     try {
+      const userId = storage.data.userId
+
       const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
 
-      const ecrypteKey = new NodeRSA(keyDecryptEcrypte.publicKey)
+      const encrypt = new NodeRSA(keyDecryptEcrypte.publicKey)
 
-      const formToString: string = JSON.stringify(form)
+      const dataToString: string = JSON.stringify(form)
 
-      const formEcrypte = ecrypteKey.encrypt(formToString, "base64")
-
-      options.body = { userId, formEcrypte }
+      const dataEcrypte = encrypt.encrypt(dataToString, "base64")
+      options.token = storage.data.token
+      options.body = { userId, dataEcrypte }
       options.url = "/api/product/receipt"
       options.method = "POST"
       dispatch(useHttp(options) as any)
@@ -41,15 +42,17 @@ export const postReceipt = (form: ITypesFormProduct) => {
 export const postDispatch = (form: ITypesFormProduct) => {
   return async (dispatch: Dispatch<IActionProduct>) => {
     try {
+      const userId = storage.data.userId
+
       const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
 
-      const ecrypteKey = new NodeRSA(keyDecryptEcrypte.publicKey)
+      const encrypt = new NodeRSA(keyDecryptEcrypte.publicKey)
 
-      const formToString: string = JSON.stringify(form)
+      const dataToString: string = JSON.stringify(form)
 
-      const formEcrypte = ecrypteKey.encrypt(formToString, "base64")
-
-      options.body = { userId, formEcrypte }
+      const dataEcrypte = encrypt.encrypt(dataToString, "base64")
+      options.token = storage.data.token
+      options.body = { userId, dataEcrypte }
       options.url = "/api/product/dispatch"
       options.method = "POST"
       dispatch(useHttp(options) as any)

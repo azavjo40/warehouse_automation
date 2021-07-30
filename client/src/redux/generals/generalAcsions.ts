@@ -11,7 +11,7 @@ const options: any = {
   method: "POST",
   body: null,
   file: null,
-  token: storage.data.token,
+  token: null,
   type: null,
 }
 
@@ -57,17 +57,21 @@ export function showAlert(text: string) {
 export function autoCreateCryptoKey() {
   return async (dispatch: Dispatch<IClearForm>) => {
     try {
-      const userId = storage.data.userId
+      let userId
+      if (storage) {
+        userId = storage.data.userId
+        options.token = storage.data.token
+      }
+
+      const timeId: string = JSON.stringify(Date.now())
 
       const storageKey: any = JSON.parse(
         localStorage.getItem(SECRETCRYPTOKEY) as any
       )
 
-      if (storageKey) {
-        return storageKey
-      }
+      if (storageKey) return storageKey
 
-      options.body = { userId }
+      userId ? (options.body = { userId }) : (options.body = { timeId })
       const { data } = await dispatch(useHttp(options))
       const dataFirst = data
 
@@ -78,25 +82,29 @@ export function autoCreateCryptoKey() {
 
         const privateKey = newKey.exportKey("private")
 
-        const ecrypteKey = new NodeRSA(dataFirst.publicKey)
+        const encrypt = new NodeRSA(dataFirst.publicKey)
 
-        const keySeandToServer: string = JSON.stringify(publicKey)
+        const publicKeyToString: string = JSON.stringify(publicKey)
 
-        const clientKey = ecrypteKey.encrypt(keySeandToServer, "base64")
+        const clientKey = encrypt.encrypt(publicKeyToString, "base64")
 
-        options.body = { userId, clientKey }
+        options.body = { userId, timeId: !userId && timeId, clientKey }
 
         const { data } = await dispatch(useHttp(options))
 
-        const decrypteKey = new NodeRSA(privateKey)
+        const decrypte = new NodeRSA(privateKey)
 
-        const getData = decrypteKey.decrypt(data, "utf8")
+        const decryptData = decrypte.decrypt(data, "utf8")
 
-        localStorage.setItem(SECRETCRYPTOKEY, getData)
+        localStorage.setItem(SECRETCRYPTOKEY, decryptData)
 
-        const getDataSting: string = JSON.parse(getData)
+        const decryptDataToSting: string = JSON.parse(decryptData)
 
-        return getDataSting
+        if (!userId) {
+          setTimeout(() => localStorage.removeItem(SECRETCRYPTOKEY), 9000)
+        }
+
+        return decryptDataToSting
       }
     } catch (e) {
       console.log(e)

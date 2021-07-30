@@ -4,26 +4,25 @@ import NodeRSA from "node-rsa"
 
 export const autoCreateCryptoKey = async (req: Request, res: Response) => {
   try {
-    const { userId, clientKey } = req.body
-
-    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const { userId, clientKey, timeId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({
+      userId: userId ? userId : timeId,
+    })
 
     if (clientKey && keyOnServer) {
       const serverDecryptKey = new NodeRSA(keyOnServer.privateKey)
 
-      const keyDecrypt: any = JSON.parse(
+      const keyDecryptClient: any = JSON.parse(
         serverDecryptKey.decrypt(clientKey, "utf8")
       )
 
-      const keyOnServerSendClient: string = JSON.stringify(keyOnServer)
+      const keyOnServerTOString: string = JSON.stringify(keyOnServer)
 
-      const keySendEecrypt = new NodeRSA(keyDecrypt)
+      const encrypt = new NodeRSA(keyDecryptClient)
 
-      const ecryptKeySendClient = keySendEecrypt.encrypt(
-        keyOnServerSendClient,
-        "base64"
-      )
-      res.status(200).json(ecryptKeySendClient)
+      const encryptData = encrypt.encrypt(keyOnServerTOString, "base64")
+
+      res.status(200).json(encryptData)
     } else if (keyOnServer) {
       res.status(200).json({ publicKey: keyOnServer.publicKey })
     } else {
@@ -36,8 +35,12 @@ export const autoCreateCryptoKey = async (req: Request, res: Response) => {
       await new SecretCryptoKey({
         privateKey,
         publicKey,
-        userId,
+        userId: userId ? userId : timeId,
       }).save()
+
+      if (!userId) {
+        setTimeout(() => SecretCryptoKey.deleteOne({ userId: timeId }), 9000)
+      }
 
       res.status(201).json({ publicKey })
     }

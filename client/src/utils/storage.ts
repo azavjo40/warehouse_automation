@@ -1,7 +1,7 @@
 import { LOCALSTORAGENAME } from "../constants/index"
 export const getStorage = (): any => {
   const storage: any = JSON.parse(localStorage.getItem(LOCALSTORAGENAME) as any)
-  return storage ? storage : "storage"
+  return storage
 }
 export const setStorage = async (items: any) => {
   try {

@@ -3,7 +3,8 @@ import { ITypesFormRegister, ITypesFormLogin } from "../../interface/auth"
 import { useHttp } from "../hooks/useHttp"
 import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
-import { LOCALSTORAGENAME } from "../../constants"
+import { LOCALSTORAGENAME, SECRETCRYPTOKEY } from "../../constants"
+import { autoCreateCryptoKey } from "../generals/generalAcsions"
 
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
@@ -19,7 +20,7 @@ export function autoLogin() {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = getStorage()
-      if (storage.data) {
+      if (storage) {
         if (storage.data.token) dispatch(authUser(true) as any)
         else dispatch(authUser(false) as any)
       }
@@ -58,6 +59,8 @@ export function authRegister(form: ITypesFormRegister) {
 export function authLogin(form: ITypesFormLogin) {
   return async (dispatch: Dispatch) => {
     try {
+      const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
+      console.log(keyDecryptEcrypte)
       const options: any = {
         url: "/api/auth/login",
         method: "POST",
@@ -66,8 +69,8 @@ export function authLogin(form: ITypesFormLogin) {
         token: null,
         type: null,
       }
-      const { data } = await dispatch(useHttp(options))
-      dispatch(autoSavStorage(data) as any)
+      // const { data } = await dispatch(useHttp(options))
+      // dispatch(autoSavStorage(data) as any)
     } catch (e) {
       console.log(e)
     }
@@ -78,6 +81,7 @@ export function logout() {
   return async (dispatch: Dispatch) => {
     dispatch(authUser(false) as any)
     localStorage.removeItem(LOCALSTORAGENAME)
+    localStorage.removeItem(SECRETCRYPTOKEY)
     dispatch(autoLogin() as any)
   }
 }
@@ -149,7 +153,7 @@ export const refresh_token = (socket: any) => {
   return async (dispatch: Dispatch) => {
     const storage: any = await getStorage()
     try {
-      if (storage.data) {
+      if (storage) {
         socket.emit("refresh/token", { userId: storage.data.userId })
         socket.on(`${storage.data.userId}`, async ({ data }: any) => {
           if (data) {

@@ -11,7 +11,7 @@ import { getStorage } from "./utils/storage"
 const App: React.FC = () => {
   const storage: any = getStorage()
   let socket: any
-  if (storage.data) {
+  if (storage) {
     socket = io("http://localhost:5000", {
       auth: {
         token: storage.data.token,
