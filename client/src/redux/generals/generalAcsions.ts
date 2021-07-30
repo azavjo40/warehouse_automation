@@ -4,6 +4,7 @@ import { Dispatch } from "redux"
 import { useHttp } from "../hooks/useHttp"
 import { getStorage } from "../../utils/storage"
 import { SECRETCRYPTOKEY } from "../../constants/index"
+import Cookies from "js-cookie"
 import NodeRSA from "node-rsa"
 const storage = getStorage()
 const options: any = {
@@ -57,55 +58,29 @@ export function showAlert(text: string) {
 export function autoCreateCryptoKey() {
   return async (dispatch: Dispatch<IClearForm>) => {
     try {
-      let userId
-      if (storage) {
-        userId = storage.data.userId
-        options.token = storage.data.token
-      }
+      const userId = storage.userId
 
-      const timeId: string = JSON.stringify(Date.now())
+      storage && (options.token = storage.token)
+      const timeId = Date.now()
+      const cookies: any = Cookies.get(SECRETCRYPTOKEY)
 
-      const storageKey: any = JSON.parse(
-        localStorage.getItem(SECRETCRYPTOKEY) as any
-      )
+      if (cookies) return JSON.parse(cookies)
+      const newKey = new NodeRSA({ b: 1024 })
+      const publicKey = newKey.exportKey("public")
+      const privateKey = newKey.exportKey("private")
 
-      if (storageKey) return storageKey
-
-      userId ? (options.body = { userId }) : (options.body = { timeId })
+      options.body = { userId, timeId: !userId && timeId, clientKey: publicKey }
       const { data } = await dispatch(useHttp(options))
-      const dataFirst = data
+      const decrypte = new NodeRSA(privateKey)
+      const decryptData = decrypte.decrypt(data, "utf8")
+      Cookies.set(SECRETCRYPTOKEY, decryptData, { expires: 1 })
+      const decryptDataToSting: string = JSON.parse(decryptData)
 
-      if (dataFirst.publicKey) {
-        const newKey = new NodeRSA({ b: 1024 })
-
-        const publicKey = newKey.exportKey("public")
-
-        const privateKey = newKey.exportKey("private")
-
-        const encrypt = new NodeRSA(dataFirst.publicKey)
-
-        const publicKeyToString: string = JSON.stringify(publicKey)
-
-        const clientKey = encrypt.encrypt(publicKeyToString, "base64")
-
-        options.body = { userId, timeId: !userId && timeId, clientKey }
-
-        const { data } = await dispatch(useHttp(options))
-
-        const decrypte = new NodeRSA(privateKey)
-
-        const decryptData = decrypte.decrypt(data, "utf8")
-
-        localStorage.setItem(SECRETCRYPTOKEY, decryptData)
-
-        const decryptDataToSting: string = JSON.parse(decryptData)
-
-        if (!userId) {
-          setTimeout(() => localStorage.removeItem(SECRETCRYPTOKEY), 9000)
-        }
-
-        return decryptDataToSting
+      if (!userId) {
+        setTimeout(() => Cookies.remove(SECRETCRYPTOKEY), 8000)
       }
+
+      return decryptDataToSting
     } catch (e) {
       console.log(e)
     }

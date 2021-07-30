@@ -17,7 +17,7 @@ export const CartNoPermissionsUser: React.FC = () => {
           </div>
         </div>
       </div>
-      <p>{storage.user.name} you do not have permission !</p>
+      <p>{storage.name} you do not have permission !</p>
     </div>
   )
 }

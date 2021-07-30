@@ -19,12 +19,12 @@ export const UserWorking: React.FC = () => {
   function deleteWorker(_id: string) {
     const confirm: boolean = window.confirm("Are you sure ?")
     if (confirm) {
-      dispatch(userDeleteWorker(_id, storage.data.userId))
+      dispatch(userDeleteWorker(_id, storage.userId))
     }
   }
 
   function blockWorker(_id: string, permissions: boolean) {
-    dispatch(userBlockWorker(_id, permissions, storage.data.userId))
+    dispatch(userBlockWorker(_id, permissions, storage.suserId))
   }
   return (
     <div className='container'>

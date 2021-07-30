@@ -5,7 +5,7 @@ import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME, SECRETCRYPTOKEY } from "../../constants"
 import { autoCreateCryptoKey } from "../generals/generalAcsions"
-
+import Cookies from "js-cookie"
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
     try {
@@ -21,7 +21,7 @@ export function autoLogin() {
     try {
       const storage: any = getStorage()
       if (storage) {
-        if (storage.data.token) dispatch(authUser(true) as any)
+        if (storage.token) dispatch(authUser(true) as any)
         else dispatch(authUser(false) as any)
       }
     } catch (e) {
@@ -32,7 +32,7 @@ export function autoLogin() {
 
 export const autoSavStorage = (data: any) => {
   return async (dispatch: Dispatch) => {
-    setStorage(data)
+    if (data.data) setStorage(data.data)
     dispatch(autoLogin() as any)
   }
 }
@@ -61,6 +61,7 @@ export function authLogin(form: ITypesFormLogin) {
     try {
       const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
       console.log(keyDecryptEcrypte)
+
       const options: any = {
         url: "/api/auth/login",
         method: "POST",
@@ -69,8 +70,8 @@ export function authLogin(form: ITypesFormLogin) {
         token: null,
         type: null,
       }
-      // const { data } = await dispatch(useHttp(options))
-      // dispatch(autoSavStorage(data) as any)
+      const { data } = await dispatch(useHttp(options))
+      dispatch(autoSavStorage(data) as any)
     } catch (e) {
       console.log(e)
     }
@@ -80,8 +81,8 @@ export function authLogin(form: ITypesFormLogin) {
 export function logout() {
   return async (dispatch: Dispatch) => {
     dispatch(authUser(false) as any)
-    localStorage.removeItem(LOCALSTORAGENAME)
-    localStorage.removeItem(SECRETCRYPTOKEY)
+    Cookies.remove(LOCALSTORAGENAME)
+    Cookies.remove(SECRETCRYPTOKEY)
     dispatch(autoLogin() as any)
   }
 }
@@ -95,7 +96,7 @@ export const usersWorking = () => {
         method: "GET",
         body: null,
         file: null,
-        token: storage.data.token,
+        token: storage.token,
         type: USERS_WORLING,
       }
       await dispatch(useHttp(options))
@@ -118,7 +119,7 @@ export const userBlockWorker = (
         method: "POST",
         body: { _id, permissions, userId },
         file: null,
-        token: storage.data.token,
+        token: storage.token,
         type: null,
       }
       await dispatch(useHttp(options))
@@ -138,7 +139,7 @@ export const userDeleteWorker = (_id: string, userId: string) => {
         method: "POST",
         body: { _id, userId },
         file: null,
-        token: storage.data.token,
+        token: storage.token,
         type: null,
       }
       await dispatch(useHttp(options))
@@ -154,8 +155,8 @@ export const refresh_token = (socket: any) => {
     const storage: any = await getStorage()
     try {
       if (storage) {
-        socket.emit("refresh/token", { userId: storage.data.userId })
-        socket.on(`${storage.data.userId}`, async ({ data }: any) => {
+        socket.emit("refresh/token", { userId: storage.userId })
+        socket.on(`${storage.userId}`, async ({ data }: any) => {
           if (data) {
             dispatch(autoSavStorage({ data }) as any)
           }

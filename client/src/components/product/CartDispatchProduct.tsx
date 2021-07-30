@@ -12,8 +12,8 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
     type_commodity: "",
     quantity: "",
     product_namber: "",
-    sender_product: `${storage.data.position}: ${storage.data.name}`,
-    userId: storage.data.userId,
+    sender_product: `${storage.position}: ${storage.name}`,
+    userId: storage.userId,
   })
 
   const changehandler = (e: React.ChangeEvent<HTMLInputElement>) => {

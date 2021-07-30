@@ -7,18 +7,16 @@ import { getStorage } from "../../utils/storage"
 export const Navbar: React.FC<INavbarProps> = ({ isAuthUser }) => {
   const dispatch = useDispatch()
   const storage: any = getStorage()
-  if (isAuthUser && storage.data) {
+  if (isAuthUser && storage) {
     return (
       <nav>
         <div className='nav-wrapper  indigo darken-4 p_r_l'>
           <NavLink to='/' className='brand-logo hide-on-med-and-down'>
-            {storage.data &&
-              `${storage.data.position.toLocaleUpperCase()}:  ${
-                storage.data.name
-              }`}
+            {storage &&
+              `${storage.position.toLocaleUpperCase()}:  ${storage.name}`}
           </NavLink>
           <ul id='nav-mobile' className='right '>
-            {storage.data.permissions === "true" && (
+            {storage.permissions === "true" && (
               <>
                 <li>
                   <NavLink to={`/receipt/product`}>Receipt Product</NavLink>
@@ -26,7 +24,7 @@ export const Navbar: React.FC<INavbarProps> = ({ isAuthUser }) => {
                 <li>
                   <NavLink to='/dispatch/product'>Dispatch Product</NavLink>
                 </li>
-                {storage.data.position !== "storekeeper" && (
+                {storage.position !== "storekeeper" && (
                   <li>
                     <NavLink to='/user/working'>User</NavLink>
                   </li>

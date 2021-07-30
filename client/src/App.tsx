@@ -14,7 +14,7 @@ const App: React.FC = () => {
   if (storage) {
     socket = io("http://localhost:5000", {
       auth: {
-        token: storage.data.token,
+        token: storage.token,
       },
     })
   }

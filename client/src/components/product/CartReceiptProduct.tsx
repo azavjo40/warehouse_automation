@@ -12,10 +12,9 @@ export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
     type_commodity: "",
     quantity: "",
     product_namber: "",
-    accepted_product: `${storage.data.position}: ${storage.data.name}`,
-    userId: storage.data.userId,
+    accepted_product: `${storage.position}: ${storage.name}`,
+    userId: storage.userId,
   })
-
   const changehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
