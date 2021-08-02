@@ -5,6 +5,7 @@ import { getStorage, setStorage } from "../../utils/storage"
 import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME, SECRETCRYPTOKEY } from "../../constants"
 import { autoCreateCryptoKey } from "../generals/generalAcsions"
+import { encryption, decryption } from "../../utils/index"
 import Cookies from "js-cookie"
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
@@ -40,16 +41,20 @@ export const autoSavStorage = (data: any) => {
 export function authRegister(form: ITypesFormRegister) {
   return async (dispatch: Dispatch) => {
     try {
+      const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
+      const dataEcrypt = encryption(form, keyDecryptEcrypte.publicKey)
+      const dataForm = { form: dataEcrypt, userId: keyDecryptEcrypte.userId }
       const options: any = {
         url: "/api/auth/register",
         method: "POST",
-        body: form,
+        body: dataForm,
         file: null,
         token: null,
         type: null,
       }
       const { data } = await dispatch(useHttp(options))
-      dispatch(autoSavStorage(data) as any)
+      const dataDecrypt = await decryption(data, keyDecryptEcrypte.privateKey)
+      dispatch(autoSavStorage({ data: dataDecrypt }) as any)
     } catch (e) {
       console.log(e)
     }
@@ -60,18 +65,19 @@ export function authLogin(form: ITypesFormLogin) {
   return async (dispatch: Dispatch) => {
     try {
       const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
-      console.log(keyDecryptEcrypte)
-
+      const dataEcrypt = encryption(form, keyDecryptEcrypte.publicKey)
+      const dataForm = { form: dataEcrypt, userId: keyDecryptEcrypte.userId }
       const options: any = {
         url: "/api/auth/login",
         method: "POST",
-        body: form,
+        body: dataForm,
         file: null,
         token: null,
         type: null,
       }
       const { data } = await dispatch(useHttp(options))
-      dispatch(autoSavStorage(data) as any)
+      const dataDecrypt = await decryption(data, keyDecryptEcrypte.privateKey)
+      dispatch(autoSavStorage({ data: dataDecrypt }) as any)
     } catch (e) {
       console.log(e)
     }
