@@ -1,10 +1,9 @@
 import { ITypesFormProduct, IActionProduct } from "../../interface/product"
-import {} from "./types"
 import { Dispatch } from "redux"
 import { autoCreateCryptoKey } from "../generals/generalAcsions"
-import NodeRSA from "node-rsa"
 import { getStorage } from "../../utils/storage"
 import { useHttp } from "../hooks/useHttp"
+import { encryption } from "../../utils/index"
 
 const storage = getStorage()
 const options: any = {
@@ -21,11 +20,9 @@ export const postReceipt = (form: ITypesFormProduct) => {
     try {
       const userId = storage.userId
       const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
-      const encrypt = new NodeRSA(keyDecryptEcrypte.publicKey)
-      const dataToString: string = JSON.stringify(form)
-      const dataEcrypte = encrypt.encrypt(dataToString, "base64")
+      const dataEcrypt = encryption(form, keyDecryptEcrypte.publicKey)
       options.token = storage.token
-      options.body = { userId, dataEcrypte }
+      options.body = { userId, dataEcrypt }
       options.url = "/api/product/receipt"
       options.method = "POST"
       dispatch(useHttp(options) as any)
@@ -40,11 +37,9 @@ export const postDispatch = (form: ITypesFormProduct) => {
     try {
       const userId = storage.userId
       const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
-      const encrypt = new NodeRSA(keyDecryptEcrypte.publicKey)
-      const dataToString: string = JSON.stringify(form)
-      const dataEcrypte = encrypt.encrypt(dataToString, "base64")
+      const dataEcrypt = encryption(form, keyDecryptEcrypte.publicKey)
       options.token = storage.token
-      options.body = { userId, dataEcrypte }
+      options.body = { userId, dataEcrypt }
       options.url = "/api/product/dispatch"
       options.method = "POST"
       dispatch(useHttp(options) as any)

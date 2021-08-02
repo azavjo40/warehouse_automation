@@ -2,6 +2,8 @@ import { User } from "../../models/index"
 import { Request, Response } from "express"
 import { token } from "../../utils/token"
 import { hash, compare } from "bcryptjs"
+import { SecretCryptoKey } from "../../models/index"
+import { decryption, encryption } from "../../utils/index"
 import {
   IAnswerServer,
   IUser,
@@ -10,7 +12,11 @@ import {
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { name, last_name, email, password, position } = req.body
+    const { form, userId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const dataDecrypt = await decryption(form, keyOnServer.privateKey)
+
+    const { name, last_name, email, password, position } = dataDecrypt
     const candidate: IUser = await User.findOne({ email })
     if (candidate) {
       return res.status(400).json({ message: "This user already exists" })
@@ -25,7 +31,6 @@ export const register = async (req: Request, res: Response) => {
       position,
       permissions: position === "storekeeper" ? "false" : "true",
     })
-
     await user.save()
 
     const jwtToken: string = token(user._id)
@@ -39,10 +44,8 @@ export const register = async (req: Request, res: Response) => {
       token: `Bearer ${jwtToken}`,
       userId: `${user._id}`,
     }
-    res.status(201).json({
-      data,
-      message: "User created",
-    })
+    const dataEncrypt = await encryption({ data }, keyOnServer.publicKey)
+    res.status(201).json({ data: dataEncrypt, message: "User created" })
   } catch (e) {
     console.log(e)
   }
@@ -50,7 +53,11 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body
+    const { form, userId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const dataDecrypt = await decryption(form, keyOnServer.privateKey)
+    console.log(dataDecrypt)
+    const { email, password } = dataDecrypt
 
     const user: IUser = await User.findOne({ email })
     if (!user) {
@@ -77,8 +84,8 @@ export const login = async (req: Request, res: Response) => {
       token: `Bearer ${jwtToken}`,
       userId: user._id,
     }
-
-    res.status(200).json({ data })
+    const dataEncrypt = await encryption(data, keyOnServer.publicKey)
+    res.status(200).json(dataEncrypt)
   } catch (e) {
     console.log(e)
   }

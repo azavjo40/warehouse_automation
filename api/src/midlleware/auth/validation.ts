@@ -1,6 +1,16 @@
 import { Request, Response, NextFunction } from "express"
-export const validation = (req: Request, res: Response, next: NextFunction) => {
-  const { name, last_name, email, password, position } = req.body
+import { SecretCryptoKey } from "../../models/index"
+import { decryption } from "../../utils/index"
+export const validation = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { form, userId } = req.body
+  const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+  const dataDecrypt = await decryption(form, keyOnServer.privateKey)
+  const { name, last_name, email, password, position } = dataDecrypt
+
   const pass: [] = password.split("")
   const url: string = req.url
   try {
