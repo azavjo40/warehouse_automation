@@ -30,7 +30,11 @@ export const CartUserWorking: React.FC<IPropsUserWorking> = ({
         </span>
         <div className='switch secondary-content flex-icone'>
           <label>
-            <input type='checkbox' checked={checked} onChange={changehandler} />
+            <input
+              type='checkbox'
+              checked={checked ? checked : false}
+              onChange={changehandler}
+            />
             <span className='lever'> </span>Block
           </label>
         </div>

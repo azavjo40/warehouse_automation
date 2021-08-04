@@ -7,6 +7,7 @@ import { LOCALSTORAGENAME, SECRETCRYPTOKEY } from "../../constants"
 import { autoCreateCryptoKey } from "../generals/generalAcsions"
 import { encryption, decryption } from "../../utils/index"
 import Cookies from "js-cookie"
+
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
     try {
@@ -53,8 +54,11 @@ export function authRegister(form: ITypesFormRegister) {
         type: null,
       }
       const { data } = await dispatch(useHttp(options))
-      const dataDecrypt = await decryption(data, keyDecryptEcrypte.privateKey)
-      dispatch(autoSavStorage({ data: dataDecrypt }) as any)
+      const dataDecrypt = await decryption(
+        data.data,
+        keyDecryptEcrypte.privateKey
+      )
+      dispatch(autoSavStorage({ data: dataDecrypt.data }) as any)
     } catch (e) {
       console.log(e)
     }
@@ -97,33 +101,39 @@ export const usersWorking = () => {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = await getStorage()
+      const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
+      const dataForm = { userId: storage.userId }
       const options: any = {
         url: "/api/auth/users/working",
-        method: "GET",
-        body: null,
+        method: "POST",
+        body: dataForm,
         file: null,
         token: storage.token,
-        type: USERS_WORLING,
+        type: null,
       }
-      await dispatch(useHttp(options))
+      const { data } = await dispatch(useHttp(options))
+      const dataDecrypt = await decryption(data, keyDecryptEcrypte.privateKey)
+      dispatch({ type: USERS_WORLING, payload: dataDecrypt })
     } catch (e) {
       console.log(e)
     }
   }
 }
 
-export const userBlockWorker = (
-  _id: string,
-  permissions: boolean,
-  userId: string
-) => {
+export const userBlockWorker = (_id: string, permissions: boolean) => {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = await getStorage()
+      const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
+      const dataEcrypt = encryption(
+        { _id, permissions },
+        keyDecryptEcrypte.publicKey
+      )
+      const dataForm = { form: dataEcrypt, userId: storage.userId }
       const options: any = {
         url: "/api/auth/user/change/working",
         method: "POST",
-        body: { _id, permissions, userId },
+        body: dataForm,
         file: null,
         token: storage.token,
         type: null,
@@ -136,14 +146,17 @@ export const userBlockWorker = (
   }
 }
 
-export const userDeleteWorker = (_id: string, userId: string) => {
+export const userDeleteWorker = (_id: string) => {
   return async (dispatch: Dispatch) => {
     try {
       const storage: any = await getStorage()
+      const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
+      const dataEcrypt = encryption({ _id }, keyDecryptEcrypte.publicKey)
+      const dataForm = { form: dataEcrypt, userId: storage.userId }
       const options: any = {
         url: "/api/auth/user/delete/working",
         method: "POST",
-        body: { _id, userId },
+        body: dataForm,
         file: null,
         token: storage.token,
         type: null,

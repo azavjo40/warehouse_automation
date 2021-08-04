@@ -6,10 +6,8 @@ import {
   userDeleteWorker,
   usersWorking,
 } from "../redux/auth/authAcsions"
-import { getStorage } from "../utils/storage"
 
 export const UserWorking: React.FC = () => {
-  const storage: any = getStorage()
   const working: any = useSelector<any>(state => state.auth.users)
 
   const dispatch = useDispatch()
@@ -19,12 +17,12 @@ export const UserWorking: React.FC = () => {
   function deleteWorker(_id: string) {
     const confirm: boolean = window.confirm("Are you sure ?")
     if (confirm) {
-      dispatch(userDeleteWorker(_id, storage.userId))
+      dispatch(userDeleteWorker(_id) as any)
     }
   }
 
   function blockWorker(_id: string, permissions: boolean) {
-    dispatch(userBlockWorker(_id, permissions, storage.suserId))
+    dispatch(userBlockWorker(_id, permissions))
   }
   return (
     <div className='container'>

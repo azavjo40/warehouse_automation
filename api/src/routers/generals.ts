@@ -1,16 +1,12 @@
 import { Router } from "express"
 import passport from "passport"
 import { autoCreateCryptoKey } from "../controlles/generals/generals"
-import { Request, Response, NextFunction } from "express"
+import { autoCorrectionTokenKey } from "../midlleware/generals/autoCorrectionTokenKey"
 const router = Router()
 
 router.post(
   "/auto/create/key",
-  (req: Request, res: Response, next: NextFunction) => {
-    const { timeId } = req.body
-    if (timeId) autoCreateCryptoKey(req, res)
-    else next()
-  },
+  autoCorrectionTokenKey,
   passport.authenticate("jwt", { session: false }),
   autoCreateCryptoKey
 )

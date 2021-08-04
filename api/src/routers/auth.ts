@@ -12,7 +12,7 @@ const router = Router()
 import { validation, chefsCheck } from "../midlleware/index"
 router.post("/register", validation, chefsCheck, register)
 router.post("/login", validation, login)
-router.get(
+router.post(
   "/users/working",
   passport.authenticate("jwt", { session: false }),
   usersWorking

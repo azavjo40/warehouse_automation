@@ -15,7 +15,6 @@ export const register = async (req: Request, res: Response) => {
     const { form, userId } = req.body
     const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const dataDecrypt = await decryption(form, keyOnServer.privateKey)
-
     const { name, last_name, email, password, position } = dataDecrypt
     const candidate: IUser = await User.findOne({ email })
     if (candidate) {
@@ -29,7 +28,7 @@ export const register = async (req: Request, res: Response) => {
       email,
       password: hashedPassword,
       position,
-      permissions: position === "storekeeper" ? "false" : "true",
+      permissions: position === "chief" ? "true" : "false",
     })
     await user.save()
 
@@ -56,7 +55,6 @@ export const login = async (req: Request, res: Response) => {
     const { form, userId } = req.body
     const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const dataDecrypt = await decryption(form, keyOnServer.privateKey)
-    console.log(dataDecrypt)
     const { email, password } = dataDecrypt
 
     const user: IUser = await User.findOne({ email })
@@ -93,8 +91,11 @@ export const login = async (req: Request, res: Response) => {
 
 export const usersWorking = async (req: Request, res: Response) => {
   try {
+    const { userId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const user: [IUser] = await User.find()
-    res.status(200).json(user)
+    const dataEncrypt = await encryption(user, keyOnServer.publicKey)
+    res.status(200).json(dataEncrypt)
   } catch (e) {
     console.log(e)
   }
@@ -102,7 +103,11 @@ export const usersWorking = async (req: Request, res: Response) => {
 
 export const userBlockWorker = async (req: Request, res: Response) => {
   try {
-    const { _id, permissions, userId } = req.body
+    const { form, userId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const dataDecrypt = await decryption(form, keyOnServer.privateKey)
+    const { _id, permissions } = dataDecrypt
+    console.log(dataDecrypt)
     const ubdate: IUbdateUserBlockWorker = {
       permissions: JSON.stringify(permissions),
     }
@@ -119,7 +124,10 @@ export const userBlockWorker = async (req: Request, res: Response) => {
 
 export const userdeleteWorker = async (req: Request, res: Response) => {
   try {
-    const { _id, userId } = req.body
+    const { form, userId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const dataDecrypt = await decryption(form, keyOnServer.privateKey)
+    const { _id } = dataDecrypt
     if (_id === userId) {
       res.status(400).json({ message: "You con not delete yourself !" })
     } else {

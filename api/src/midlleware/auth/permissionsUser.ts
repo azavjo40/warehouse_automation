@@ -1,13 +1,18 @@
 import { Request, Response, NextFunction } from "express"
 import { User } from "../../models/index"
 import { IUser } from "../../interface/auth"
+import { SecretCryptoKey } from "../../models/index"
+import { decryption } from "../../utils/index"
 export const permissionsUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { _id, userId } = req.body
   try {
+    const { form, userId } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const dataDecrypt = await decryption(form, keyOnServer.privateKey)
+    const { _id } = dataDecrypt
     const user: IUser = await User.findOne({ _id: userId })
     const candidate: IUser = await User.findOne({ _id })
     if (user.position === "chief") next()

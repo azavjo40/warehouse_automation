@@ -19,24 +19,25 @@ export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      product_namber: JSON.stringify(Date.now()),
     })
   }
 
   const autoRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     receiptHandler(form)
-    setTimeout(() => {
-      setForm({
-        purveyor: "",
-        driver: "",
-        product_name: "",
-        type_commodity: "",
-        quantity: "",
-        product_namber: "",
-        accepted_product: "",
-        userId: "",
-      })
-    }, 2000)
+    // setTimeout(() => {
+    //   setForm({
+    //     purveyor: "",
+    //     driver: "",
+    //     product_name: "",
+    //     type_commodity: "",
+    //     quantity: "",
+    //     product_namber: "",
+    //     accepted_product: "",
+    //     userId: "",
+    //   })
+    // }, 2000)
   }
 
   return (
@@ -71,24 +72,24 @@ export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
         <div className='row'>
           <div className='input-field col s6'>
             <input
-              placeholder='Product name'
-              type='text'
-              className='validate'
-              required
-              name='product_name'
-              value={form.product_name}
-              onChange={changehandler}
-            />
-          </div>
-
-          <div className='input-field col s6'>
-            <input
               type='text'
               className='validate'
               placeholder='Type commodity'
               required
               name='type_commodity'
               value={form.type_commodity}
+              onChange={changehandler}
+            />
+          </div>
+
+          <div className='input-field col s6'>
+            <input
+              placeholder='Product name'
+              type='text'
+              className='validate'
+              required
+              name='product_name'
+              value={form.product_name}
               onChange={changehandler}
             />
           </div>

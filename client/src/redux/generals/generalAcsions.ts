@@ -7,7 +7,7 @@ import { SECRETCRYPTOKEY } from "../../constants/index"
 import { decryption } from "../../utils/index"
 import Cookies from "js-cookie"
 import NodeRSA from "node-rsa"
-const storage = getStorage()
+
 const options: any = {
   url: null,
   method: null,
@@ -59,11 +59,11 @@ export function showAlert(text: string) {
 export function autoCreateCryptoKey() {
   return async (dispatch: Dispatch<IClearForm>) => {
     try {
+      const storage = getStorage()
       const userId = storage ? storage.userId : null
       storage && (options.token = storage.token)
       const timeId = Date.now()
       const cookies: any = Cookies.get(SECRETCRYPTOKEY)
-
       if (cookies) return JSON.parse(cookies)
       const newKey = new NodeRSA({ b: 1024 })
       const publicKey = newKey.exportKey("public")
@@ -77,7 +77,6 @@ export function autoCreateCryptoKey() {
       if (!userId) {
         setTimeout(() => Cookies.remove(SECRETCRYPTOKEY), 8000)
       }
-
       return dataDecrypt
     } catch (e) {
       console.log(e)
