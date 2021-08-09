@@ -19,7 +19,7 @@ export interface IFormPropsReceiptProduct {
 }
 
 export interface productState {
-  product: Array<[]>
+  product: null
 }
 
 export type IClearForm = { type: string; payload: Array<[]> }

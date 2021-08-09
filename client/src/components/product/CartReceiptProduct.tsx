@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { getStorage } from "../../utils/storage"
 import { IFormPropsReceiptProduct } from "../../interface/product"
+import { useSelector } from "react-redux"
 export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
   receiptHandler,
 }) => {
+  const clerForm = useSelector((state: any) => state.generals.clearForm)
   const storage = getStorage()
   const [form, setForm] = useState({
     purveyor: "",
@@ -26,18 +28,19 @@ export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
   const autoRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     receiptHandler(form)
-    // setTimeout(() => {
-    //   setForm({
-    //     purveyor: "",
-    //     driver: "",
-    //     product_name: "",
-    //     type_commodity: "",
-    //     quantity: "",
-    //     product_namber: "",
-    //     accepted_product: "",
-    //     userId: "",
-    //   })
-    // }, 2000)
+    clerForm &&
+      setTimeout(() => {
+        setForm({
+          purveyor: "",
+          driver: "",
+          product_name: "",
+          type_commodity: "",
+          quantity: "",
+          product_namber: "",
+          accepted_product: "",
+          userId: "",
+        })
+      }, 2000)
   }
 
   return (

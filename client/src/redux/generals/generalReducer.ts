@@ -15,7 +15,7 @@ export const generalReducer = (
     case SHOW_ALERT:
       return { ...state, alert: actoin.payload }
     case CLEAR_FORM:
-      return { ...state, form: actoin.payload }
+      return { ...state, clearForm: actoin.payload }
     default:
       return state
   }

@@ -1,9 +1,11 @@
 import React, { useState } from "react"
 import { getStorage } from "../../utils/storage"
 import { IFormPropsDispatchProduct } from "../../interface/product"
+import { useSelector } from "react-redux"
 export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
   dispatchHandler,
 }) => {
+  const clerForm = useSelector((state: any) => state.generals.clearForm)
   const storage = getStorage()
   const [form, setForm] = useState({
     purveyor: "www ua be co",
@@ -20,24 +22,26 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      product_namber: JSON.stringify(Date.now()),
     })
   }
 
   const autoRegister = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     dispatchHandler(form)
-    setTimeout(() => {
-      setForm({
-        purveyor: "",
-        driver: "",
-        product_name: "",
-        type_commodity: "",
-        quantity: "",
-        product_namber: "",
-        sender_product: "",
-        userId: "",
-      })
-    }, 2000)
+    clerForm &&
+      setTimeout(() => {
+        setForm({
+          purveyor: "",
+          driver: "",
+          product_name: "",
+          type_commodity: "",
+          quantity: "",
+          product_namber: "",
+          sender_product: "",
+          userId: "",
+        })
+      }, 2000)
   }
 
   return (
@@ -72,24 +76,24 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
         <div className='row'>
           <div className='input-field col s6'>
             <input
-              placeholder='Product name'
-              type='text'
-              className='validate'
-              required
-              name='product_name'
-              value={form.product_name}
-              onChange={changehandler}
-            />
-          </div>
-
-          <div className='input-field col s6'>
-            <input
               type='text'
               className='validate'
               placeholder='Type commodity'
               required
               name='type_commodity'
               value={form.type_commodity}
+              onChange={changehandler}
+            />
+          </div>
+
+          <div className='input-field col s6'>
+            <input
+              placeholder='Product name'
+              type='text'
+              className='validate'
+              required
+              name='product_name'
+              value={form.product_name}
               onChange={changehandler}
             />
           </div>

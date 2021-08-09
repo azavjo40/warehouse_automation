@@ -1,6 +1,10 @@
 import { Router } from "express"
 import passport from "passport"
-import { dispatch, receipt } from "../controlles/product/product"
+import {
+  dispatch,
+  receipt,
+  histryProducts,
+} from "../controlles/product/product"
 const router = Router()
 
 router.post(
@@ -12,5 +16,10 @@ router.post(
   "/product/receipt",
   passport.authenticate("jwt", { session: false }),
   receipt
+)
+router.post(
+  "/product/history",
+  passport.authenticate("jwt", { session: false }),
+  histryProducts
 )
 export default router

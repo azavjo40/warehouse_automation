@@ -107,7 +107,6 @@ export const userBlockWorker = async (req: Request, res: Response) => {
     const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const dataDecrypt = await decryption(form, keyOnServer.privateKey)
     const { _id, permissions } = dataDecrypt
-    console.log(dataDecrypt)
     const ubdate: IUbdateUserBlockWorker = {
       permissions: JSON.stringify(permissions),
     }

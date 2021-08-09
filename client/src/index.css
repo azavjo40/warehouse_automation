@@ -44,3 +44,10 @@ code {
   z-index: 100;
   color: white;
 }
+.cursor {
+  cursor: pointer;
+}
+.turnTheQueue {
+  display: flex;
+  flex-direction: column-reverse;
+}

@@ -24,7 +24,9 @@ export const autoCreateCryptoKey = async (req: Request, res: Response) => {
       }).save()
       const dataEncrypt = await encryption(secretCryptoKey, clientKey)
       if (!userId) {
-        setTimeout(() => SecretCryptoKey.deleteOne({ userId: timeId }), 9000)
+        setTimeout(async () => {
+          await SecretCryptoKey.deleteOne({ _id: secretCryptoKey._id })
+        }, 9000)
       }
       res.status(201).json(dataEncrypt)
     }

@@ -28,8 +28,8 @@ export function useHttp(options: any): any {
       }
 
       const response = await fetch(options.url, requestOptions)
-      const data = await response.json()
       dispatch(ClearForm(response.ok))
+      const data = await response.json()
 
       if (options.type && data) {
         dispatch({ type: options.type, payload: data })

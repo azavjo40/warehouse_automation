@@ -62,7 +62,7 @@ export function autoCreateCryptoKey() {
       const storage = getStorage()
       const userId = storage ? storage.userId : null
       storage && (options.token = storage.token)
-      const timeId = Date.now()
+      const timeId = JSON.stringify(Date.now())
       const cookies: any = Cookies.get(SECRETCRYPTOKEY)
       if (cookies) return JSON.parse(cookies)
       const newKey = new NodeRSA({ b: 1024 })

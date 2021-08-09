@@ -1,7 +1,7 @@
 import { ALL_PRODUCT } from "./types"
 import { IActionProduct, productState } from "../../interface/product"
 const initialState: productState = {
-  product: [],
+  product: null,
 }
 export const productReducer = (
   state: productState = initialState,
