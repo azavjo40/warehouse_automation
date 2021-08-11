@@ -1,12 +1,12 @@
 import React, { useState } from "react"
-import { getStorage } from "../../utils/storage"
+
 import { IFormPropsReceiptProduct } from "../../interface/product"
 import { useSelector } from "react-redux"
 export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
   receiptHandler,
+  storage,
 }) => {
   const clerForm = useSelector((state: any) => state.generals.clearForm)
-  const storage = getStorage()
   const [form, setForm] = useState({
     purveyor: "",
     driver: "",
@@ -14,14 +14,16 @@ export const CartReceiptProduct: React.FC<IFormPropsReceiptProduct> = ({
     type_commodity: "",
     quantity: "",
     product_namber: "",
-    accepted_product: `${storage.position}: ${storage.name}`,
-    userId: storage.userId,
+    accepted_product: "",
+    userId: "",
   })
   const changehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
       product_namber: JSON.stringify(Date.now()),
+      accepted_product: `${storage.position}: ${storage.name}`,
+      userId: storage.userId,
     })
   }
 

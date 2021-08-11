@@ -5,6 +5,7 @@ import { getStorage } from "../../utils/storage"
 import { useHttp } from "../hooks/useHttp"
 import { encryption, decryption } from "../../utils/index"
 import { ALL_PRODUCT } from "./types"
+import { DISPATCHPDF, RECEIPTPDF } from "../../constants"
 const options: any = {
   url: null,
   method: null,
@@ -12,6 +13,38 @@ const options: any = {
   file: null,
   token: null,
   type: null,
+}
+
+export const overHeadPdfReceipt = (form: any) => {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const receiptLocal = JSON.parse(localStorage.getItem(RECEIPTPDF) as any)
+      if (receiptLocal) {
+        const dataStorage = [...receiptLocal, form]
+        localStorage.setItem(RECEIPTPDF, JSON.stringify(dataStorage))
+      } else {
+        localStorage.setItem(RECEIPTPDF, JSON.stringify([form]))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const overHeadPdfDispatch = (form: any) => {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const dispatchLocal = JSON.parse(localStorage.getItem(DISPATCHPDF) as any)
+      if (dispatchLocal) {
+        const dataStorage = [...dispatchLocal, form]
+        localStorage.setItem(DISPATCHPDF, JSON.stringify(dataStorage))
+      } else {
+        localStorage.setItem(DISPATCHPDF, JSON.stringify([form]))
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 export const postReceipt = (form: ITypesFormProduct) => {
@@ -25,7 +58,8 @@ export const postReceipt = (form: ITypesFormProduct) => {
       options.body = { userId, FormData: dataEcrypt }
       options.url = "/api/product/receipt"
       options.method = "POST"
-      dispatch(useHttp(options) as any)
+      const { data } = await dispatch(useHttp(options) as any)
+      if (data.good) dispatch(overHeadPdfReceipt(form) as any)
     } catch (e) {
       console.log(e)
     }
@@ -43,7 +77,8 @@ export const postDispatch = (form: ITypesFormProduct) => {
       options.body = { userId, FormData: dataEcrypt }
       options.url = "/api/product/dispatch"
       options.method = "POST"
-      dispatch(useHttp(options) as any)
+      const { data } = await dispatch(useHttp(options) as any)
+      if (data.good) dispatch(overHeadPdfDispatch(form) as any)
     } catch (e) {
       console.log(e)
     }

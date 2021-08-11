@@ -1,12 +1,11 @@
 import React, { useState } from "react"
-import { getStorage } from "../../utils/storage"
 import { IFormPropsDispatchProduct } from "../../interface/product"
 import { useSelector } from "react-redux"
 export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
   dispatchHandler,
+  storage,
 }) => {
   const clerForm = useSelector((state: any) => state.generals.clearForm)
-  const storage = getStorage()
   const [form, setForm] = useState({
     purveyor: "www ua be co",
     driver: "",
@@ -14,8 +13,8 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
     type_commodity: "",
     quantity: "",
     product_namber: "",
-    sender_product: `${storage.position}: ${storage.name}`,
-    userId: storage.userId,
+    sender_product: "",
+    userId: "",
   })
 
   const changehandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +22,8 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
       ...form,
       [e.target.name]: e.target.value,
       product_namber: JSON.stringify(Date.now()),
+      userId: storage.userId,
+      sender_product: `${storage.position}: ${storage.name}`,
     })
   }
 
@@ -32,7 +33,7 @@ export const CartDispatchProduct: React.FC<IFormPropsDispatchProduct> = ({
     clerForm &&
       setTimeout(() => {
         setForm({
-          purveyor: "",
+          purveyor: "www ua be co",
           driver: "",
           product_name: "",
           type_commodity: "",

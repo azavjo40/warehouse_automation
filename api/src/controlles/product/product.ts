@@ -14,31 +14,35 @@ export const dispatch = async (req: Request, res: Response) => {
     const { userId, FormData } = req.body
     const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const dataDecrypt = await decryption(FormData, keyOnServer.privateKey)
-
     const findCommonProducts = await CommonProducts.findOne({
       product_name: dataDecrypt.product_name,
       type_commodity: dataDecrypt.type_commodity,
     })
     if (findCommonProducts) {
       if (dataDecrypt.quantity > findCommonProducts.quantity) {
-        res.status(200).json({ message: "We don not have that much Products!" })
+        if (findCommonProducts.quantity === "0") {
+          await CommonProducts.deleteOne({ _id: findCommonProducts._id })
+          res.status(200).json({ message: "We don not have that Products!" })
+        } else {
+          res
+            .status(200)
+            .json({ message: "We don not have that much Products!" })
+        }
+      } else {
+        const ubdate = {
+          quantity: JSON.stringify(
+            parseInt(findCommonProducts.quantity) -
+              parseInt(dataDecrypt.quantity)
+          ),
+        }
+        await CommonProducts.findByIdAndUpdate(
+          { _id: findCommonProducts._id },
+          { $set: ubdate },
+          { new: true }
+        )
+        await new Dispatch(dataDecrypt).save()
+        res.status(200).json({ good: true, message: "Products send!" })
       }
-      if (findCommonProducts.quantity === "0") {
-        await CommonProducts.deleteOne({ _id: findCommonProducts._id })
-        res.status(200).json({ message: "We don not have that Products!" })
-      }
-      const ubdate = {
-        quantity: JSON.stringify(
-          parseInt(findCommonProducts.quantity) - parseInt(dataDecrypt.quantity)
-        ),
-      }
-      await CommonProducts.findByIdAndUpdate(
-        { _id: findCommonProducts._id },
-        { $set: ubdate },
-        { new: true }
-      )
-      await new Dispatch(dataDecrypt).save()
-      res.status(200).json({ message: "Products send!" })
     } else {
       res.status(200).json({ message: "No Products !" })
     }
@@ -52,7 +56,6 @@ export const receipt = async (req: Request, res: Response) => {
     const { userId, FormData } = req.body
     const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const dataDecrypt = await decryption(FormData, keyOnServer.privateKey)
-
     const findCommonProducts = await CommonProducts.findOne({
       product_name: dataDecrypt.product_name,
       type_commodity: dataDecrypt.type_commodity,
@@ -70,7 +73,7 @@ export const receipt = async (req: Request, res: Response) => {
         { new: true }
       )
       await new Receipt(dataDecrypt).save()
-      res.status(200).json({ message: "Products change received!" })
+      res.status(200).json({ good: true, message: "Products change received!" })
     } else {
       await new CommonProducts({
         product_name: dataDecrypt.product_name,
@@ -78,7 +81,7 @@ export const receipt = async (req: Request, res: Response) => {
         quantity: dataDecrypt.quantity,
       }).save()
       await new Receipt(dataDecrypt).save()
-      res.status(201).json({ message: "Products received!" })
+      res.status(201).json({ good: true, message: "Products received!" })
     }
   } catch (e) {
     console.log(e)

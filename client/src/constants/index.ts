@@ -1,2 +1,4 @@
 export const LOCALSTORAGENAME: string = "LOCALSTORAGE/LOCALSTORAGE"
 export const SECRETCRYPTOKEY: string = "SECRET/CRYPTO/KEY"
+export const DISPATCHPDF: string = "DISPATCHPDF"
+export const RECEIPTPDF: string = "RECEIPTPDF"

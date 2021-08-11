@@ -12,10 +12,12 @@ export interface ITypesFormProduct {
 
 export interface IFormPropsDispatchProduct {
   dispatchHandler: (form: ITypesFormProduct) => void
+  storage: any
 }
 
 export interface IFormPropsReceiptProduct {
   receiptHandler: (form: ITypesFormProduct) => void
+  storage: any
 }
 
 export interface productState {
