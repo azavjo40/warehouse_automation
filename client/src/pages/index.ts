@@ -5,6 +5,7 @@ import { DispatchProduct } from "./DispatchProduct"
 import { NoPermissionsUser } from "./NoPermissionsUser"
 import { UserWorking } from "./UserWorking"
 import { HistoryProduct } from "./HistoryProduct"
+import { OverHeadPdf } from "./OverHeadPdf"
 export {
   ReceiptProduct,
   DispatchProduct,
@@ -13,4 +14,5 @@ export {
   NoPermissionsUser,
   UserWorking,
   HistoryProduct,
+  OverHeadPdf,
 }

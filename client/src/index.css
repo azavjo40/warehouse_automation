@@ -51,3 +51,42 @@ code {
   display: flex;
   flex-direction: column-reverse;
 }
+
+.pdf-list {
+  height: 400px;
+  width: 100%;
+  position: relative;
+}
+.list-ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border: rgb(37, 35, 35) solid 1px;
+  margin: 0.5px;
+}
+.list-li {
+  width: 30%;
+  padding: 5px;
+}
+.pdf-cont {
+  display: flex;
+  justify-content: center;
+}
+
+.singature-cont {
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.singature-list {
+  border: rgb(37, 35, 35) solid 1px;
+  width: 250px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

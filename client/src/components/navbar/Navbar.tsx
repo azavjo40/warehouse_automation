@@ -19,10 +19,10 @@ export const Navbar: React.FC<INavbarProps> = ({ isAuthUser }) => {
             {storage.permissions === "true" && (
               <>
                 <li>
-                  <NavLink to={`/receipt/product`}>Receipt Product</NavLink>
+                  <NavLink to={`/receipt/product`}>Get Product</NavLink>
                 </li>
                 <li>
-                  <NavLink to='/dispatch/product'>Dispatch Product</NavLink>
+                  <NavLink to='/dispatch/product'>Post Product</NavLink>
                 </li>
                 {storage.position !== "storekeeper" && (
                   <li>
@@ -32,10 +32,14 @@ export const Navbar: React.FC<INavbarProps> = ({ isAuthUser }) => {
                 <li>
                   <NavLink to='/history/product'>History</NavLink>
                 </li>
+
+                <li>
+                  <NavLink to='/over/head/pdf'>Pdf Doc</NavLink>
+                </li>
               </>
             )}
             <li onClick={() => dispatch(logout())}>
-              <NavLink to='/login'>Log out</NavLink>
+              <NavLink to='/login'>Log Out</NavLink>
             </li>
           </ul>
         </div>

@@ -1,0 +1,46 @@
+import React, { useState, useRef } from "react"
+import { OverHeadGetPdfCart, OverHeadPostPdfCart } from "../components/index"
+import { RECEIPTPDF, DISPATCHPDF } from "../constants"
+
+import ReactToPrint from "react-to-print"
+export const OverHeadPdf: React.FC = () => {
+  const getPdf = JSON.parse(localStorage.getItem(RECEIPTPDF) as any)
+  const postPdf = JSON.parse(localStorage.getItem(DISPATCHPDF) as any)
+  const [show, setShow] = useState(false)
+  const componentRef = useRef() as any
+  return (
+    <div className='container ' ref={componentRef}>
+      <div className='collection'>
+        <p className='collection-item'>
+          <span onClick={() => setShow(false)} className='new badge red cursor'>
+            Shipped products
+          </span>
+          {show ? "  Received products" : "Shipped products"}
+          <span onClick={() => setShow(true)} className='new badge blue cursor'>
+            Received products
+          </span>
+        </p>
+      </div>
+      <div className='pdf-cont'>
+        <div className='pdf-list'>
+          <span>Warszawa </span>
+          <span>{`Date: ${new Date().toLocaleDateString()}  ${new Date().toLocaleTimeString()}`}</span>
+          {show ? (
+            <OverHeadGetPdfCart getPdf={getPdf} />
+          ) : (
+            <OverHeadPostPdfCart postPdf={postPdf} />
+          )}
+        </div>
+      </div>
+
+      <ReactToPrint
+        trigger={() => (
+          <p className='waves-effect waves-light btn-small right'>
+            <i className='material-icons left'>cloud</i>Create Pdf
+          </p>
+        )}
+        content={() => componentRef.current}
+      />
+    </div>
+  )
+}

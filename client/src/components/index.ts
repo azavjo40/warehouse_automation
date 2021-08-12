@@ -7,6 +7,8 @@ import { CartUserWorking } from "./auth/CartUserWorking"
 import { Alert } from "./generals/Alert"
 import { CartReceiptProduct } from "./product/CartReceiptProduct"
 import { CartDispatchProduct } from "./product/CartDispatchProduct"
+import { OverHeadPostPdfCart } from "./product/OverHeadPostPdfCart"
+import { OverHeadGetPdfCart } from "./product/OverHeadGetPdfCart"
 export {
   Navbar,
   RegisterForm,
@@ -17,4 +19,6 @@ export {
   Alert,
   CartReceiptProduct,
   CartDispatchProduct,
+  OverHeadPostPdfCart,
+  OverHeadGetPdfCart,
 }

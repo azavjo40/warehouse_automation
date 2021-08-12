@@ -8,6 +8,7 @@ import {
   NoPermissionsUser,
   UserWorking,
   HistoryProduct,
+  OverHeadPdf,
 } from "../pages/index"
 import { getStorage } from "../utils/storage"
 import { IPropsRouter } from "../interface/router"
@@ -43,6 +44,10 @@ export const useRouter: React.FC<IPropsRouter> = ({ isAuthUser }) => {
 
         <Route path={`/receipt/product`} exact>
           <ReceiptProduct />
+        </Route>
+
+        <Route path={`/over/head/pdf`} exact>
+          <OverHeadPdf />
         </Route>
         <Redirect to={`/receipt/product`} />
       </Switch>

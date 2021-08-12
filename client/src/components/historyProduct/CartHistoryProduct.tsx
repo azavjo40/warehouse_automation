@@ -6,11 +6,11 @@ export const CarthistoryProduct: React.FC<any> = ({ product }) => {
       <div className='collection'>
         <p className='collection-item'>
           <span onClick={() => setShow(false)} className='new badge red cursor'>
-            Dispatch
+            post History
           </span>
-          {show ? "Receipt" : "Dispatch"}
+          {show ? "Get History" : "post History"}
           <span onClick={() => setShow(true)} className='new badge blue cursor'>
-            Receipt
+            Get History
           </span>
         </p>
       </div>
