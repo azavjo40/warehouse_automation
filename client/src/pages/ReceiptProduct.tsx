@@ -8,7 +8,6 @@ export const ReceiptProduct: React.FC = () => {
   const storage = getStorage()
   const dispatch = useDispatch()
   function receiptHandler(form: ITypesFormProduct) {
-    console.log(form)
     dispatch(postReceipt(form))
   }
   return (
