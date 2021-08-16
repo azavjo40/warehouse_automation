@@ -1,3 +1,4 @@
 import { decryption } from "./generals/decryption"
 import { encryption } from "./generals/encryption"
-export { decryption, encryption }
+import { storagePdf } from "./generals/storagePdf"
+export { decryption, encryption, storagePdf }

@@ -2,17 +2,19 @@ import React, { useState, useRef } from "react"
 import { OverHeadGetPdfCart, OverHeadPostPdfCart } from "../components/index"
 import { RECEIPTPDF, DISPATCHPDF } from "../constants"
 import ReactToPrint from "react-to-print"
+import { storagePdf } from "../utils"
 
 export const OverHeadPdf: React.FC = () => {
-  const getPdf = JSON.parse(localStorage.getItem(RECEIPTPDF) as any)
-  const postPdf = JSON.parse(localStorage.getItem(DISPATCHPDF) as any)
+  const { getPdf, postPdf } = storagePdf()
+
+  const [show, setShow] = useState(false)
+  const componentRef = useRef() as any
+
   const removepdfHost = () => {
-    const confirm: boolean = window.confirm("Did you create pdf ?")
+    const confirm: boolean = window.confirm("Did you remove pdf ?")
     const result = show ? RECEIPTPDF : DISPATCHPDF
     confirm && localStorage.removeItem(result)
   }
-  const [show, setShow] = useState(false)
-  const componentRef = useRef() as any
   return (
     <>
       <div className='container ' ref={componentRef}>

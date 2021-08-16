@@ -103,3 +103,22 @@ export const historyProduct = () => {
     }
   }
 }
+
+export const deleteHistoryProduct = (_id: any) => {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const storage = getStorage()
+      const userId = storage.userId
+      const keyDecryptEcrypte = await dispatch(autoCreateCryptoKey() as any)
+      const dataEcrypt = encryption(_id, keyDecryptEcrypte.publicKey)
+      options.token = storage.token
+      options.body = { userId, FormData: dataEcrypt }
+      options.url = "/api/delete/product/history"
+      options.method = "POST"
+      await dispatch(useHttp(options) as any)
+      dispatch(historyProduct())
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}

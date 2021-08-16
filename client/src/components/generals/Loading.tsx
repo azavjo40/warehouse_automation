@@ -1,7 +1,5 @@
 import React from "react"
-import { getStorage } from "../../utils/storage"
-export const CartNoPermissionsUser: React.FC = () => {
-  const storage: any = getStorage()
+export const Loading: React.FC<any> = ({ text }) => {
   return (
     <div className='cartNoPermissionsUser '>
       <div className='preloader-wrapper big active'>
@@ -17,7 +15,7 @@ export const CartNoPermissionsUser: React.FC = () => {
           </div>
         </div>
       </div>
-      <p>{storage.name} you do not have permission !</p>
+      <p>{text}</p>
     </div>
   )
 }

@@ -4,6 +4,7 @@ import {
   dispatch,
   receipt,
   histryProducts,
+  deleteHistryProducts,
 } from "../controlles/product/product"
 const router = Router()
 
@@ -21,5 +22,10 @@ router.post(
   "/product/history",
   passport.authenticate("jwt", { session: false }),
   histryProducts
+)
+router.post(
+  "/delete/product/history",
+  passport.authenticate("jwt", { session: false }),
+  deleteHistryProducts
 )
 export default router

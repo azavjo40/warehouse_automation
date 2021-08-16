@@ -1,9 +1,11 @@
 import React from "react"
-import { CartNoPermissionsUser } from "../components/index"
+import { getStorage } from "../utils/storage"
+import { Loading } from "../components/index"
 export const NoPermissionsUser: React.FC = () => {
+  const storage: any = getStorage()
   return (
     <div className='container'>
-      <CartNoPermissionsUser />
+      <Loading text={`${storage.name} you do not have permission !`} />
     </div>
   )
 }

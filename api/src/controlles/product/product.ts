@@ -117,3 +117,21 @@ export const histryProducts = async (req: Request, res: Response) => {
     console.log(e)
   }
 }
+
+export const deleteHistryProducts = async (req: Request, res: Response) => {
+  try {
+    const { userId, FormData } = req.body
+    const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
+    const dataDecrypt = await decryption(FormData, keyOnServer.privateKey)
+    const { post, get } = dataDecrypt
+    if (post) {
+      await Dispatch.deleteOne({ _id: post })
+      res.status(200).json({ message: "You delete history" })
+    } else if (get) {
+      await Receipt.deleteOne({ _id: get })
+      res.status(200).json({ message: "You delete history" })
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}
