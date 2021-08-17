@@ -3,9 +3,9 @@ import { Loading } from "../../components/index"
 export const OverHeadGetPdfCart: React.FC<any> = ({ getPdf }) => {
   return (
     <>
-      {getPdf ? (
+      {getPdf && getPdf.getPdf ? (
         <>
-          {getPdf.map((item: any, index: any) => {
+          {getPdf.getPdf.map((item: any, index: any) => {
             return (
               <ul className='list-ul' key={index}>
                 <li className='list-li'>Type: {item.type_commodity}</li>
@@ -16,10 +16,10 @@ export const OverHeadGetPdfCart: React.FC<any> = ({ getPdf }) => {
           })}
           <div className='singature-cont'>
             <span className='singature-list'>
-              Recipient = {getPdf[0].accepted_product}
+              Recipient = {getPdf.getPdf[0].accepted_product}
             </span>
             <span className='singature-list'>
-              Delivery = {`Driver: ${getPdf[0].driver}`}
+              Delivery = {`Driver: ${getPdf.getPdf[0].driver}`}
             </span>
           </div>
         </>

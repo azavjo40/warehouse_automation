@@ -3,9 +3,9 @@ import { Loading } from "../../components/index"
 export const OverHeadPostPdfCart: React.FC<any> = ({ postPdf }) => {
   return (
     <>
-      {postPdf ? (
+      {postPdf && postPdf.postPdf !== null ? (
         <>
-          {postPdf.map((item: any, index: any) => {
+          {postPdf.postPdf.map((item: any, index: any) => {
             return (
               <ul className='list-ul' key={index}>
                 <li className='list-li'>Type: {item.type_commodity}</li>
@@ -16,10 +16,10 @@ export const OverHeadPostPdfCart: React.FC<any> = ({ postPdf }) => {
           })}
           <div className='singature-cont'>
             <span className='singature-list'>
-              Sender = {postPdf[0].sender_product}
+              Sender = {postPdf.postPdf[0].sender_product}
             </span>
             <span className='singature-list'>
-              Recipient = {`Driver: ${postPdf[0].driver}`}
+              Recipient = {`Driver: ${postPdf.postPdf[0].driver}`}
             </span>
           </div>
         </>

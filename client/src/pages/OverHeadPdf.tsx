@@ -1,19 +1,22 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { OverHeadGetPdfCart, OverHeadPostPdfCart } from "../components/index"
 import { RECEIPTPDF, DISPATCHPDF } from "../constants"
 import ReactToPrint from "react-to-print"
-import { storagePdf } from "../utils"
+import { useDispatch, useSelector } from "react-redux"
+import { autoOverHeadPdf } from "../redux/product/productAcsions"
 
 export const OverHeadPdf: React.FC = () => {
-  const { getPdf, postPdf } = storagePdf()
-
+  const dispatch = useDispatch()
   const [show, setShow] = useState(false)
+  useEffect(() => dispatch(autoOverHeadPdf() as any), [dispatch])
+  const productPdf = useSelector<any>(state => state.product.pdf)
   const componentRef = useRef() as any
 
   const removepdfHost = () => {
     const confirm: boolean = window.confirm("Did you remove pdf ?")
     const result = show ? RECEIPTPDF : DISPATCHPDF
     confirm && localStorage.removeItem(result)
+    dispatch(autoOverHeadPdf() as any)
   }
   return (
     <>
@@ -40,9 +43,9 @@ export const OverHeadPdf: React.FC = () => {
             <span>Warszawa </span>
             <span>{`Date: ${new Date().toLocaleDateString()}  ${new Date().toLocaleTimeString()}`}</span>
             {show ? (
-              <OverHeadGetPdfCart getPdf={getPdf} />
+              <OverHeadGetPdfCart getPdf={productPdf} />
             ) : (
-              <OverHeadPostPdfCart postPdf={postPdf} />
+              <OverHeadPostPdfCart postPdf={productPdf} />
             )}
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { User } from "../../../models/index"
 import { token } from "../../../utils/token"
 import { IAnswerServer } from "../../../interface/auth"
+
 export const refresh_token = async (socket: any, io: any) => {
   try {
     socket.on("refresh/token", async ({ userId }: any) => {

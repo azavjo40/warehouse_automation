@@ -21,7 +21,8 @@ export interface IFormPropsReceiptProduct {
 }
 
 export interface productState {
-  product: null
+  product: any
+  pdf: any
 }
 
 export type IClearForm = { type: string; payload: Array<[]> }

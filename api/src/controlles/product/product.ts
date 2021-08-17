@@ -60,7 +60,6 @@ export const receipt = async (req: Request, res: Response) => {
       product_name: dataDecrypt.product_name,
       type_commodity: dataDecrypt.type_commodity,
     })
-
     if (findCommonProducts) {
       const ubdate = {
         quantity: JSON.stringify(
@@ -121,15 +120,20 @@ export const histryProducts = async (req: Request, res: Response) => {
 export const deleteHistryProducts = async (req: Request, res: Response) => {
   try {
     const { userId, FormData } = req.body
+    const user = await User.findOne({ _id: userId })
     const keyOnServer: any = await SecretCryptoKey.findOne({ userId })
     const dataDecrypt = await decryption(FormData, keyOnServer.privateKey)
     const { post, get } = dataDecrypt
-    if (post) {
+    if (user.position === "storekeeper") {
+      res
+        .status(200)
+        .json({ message: "You do not have the right to delete history!" })
+    } else if (post) {
       await Dispatch.deleteOne({ _id: post })
-      res.status(200).json({ message: "You delete history" })
+      res.status(200).json({ message: "You delete history!" })
     } else if (get) {
       await Receipt.deleteOne({ _id: get })
-      res.status(200).json({ message: "You delete history" })
+      res.status(200).json({ message: "You delete history!" })
     }
   } catch (e) {
     console.log(e)

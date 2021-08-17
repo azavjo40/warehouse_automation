@@ -1,12 +1,12 @@
 import { LOCALSTORAGENAME } from "../constants/index"
-import Cookies from "js-cookie"
 export const getStorage = (): any => {
-  const storage: any = Cookies.get(LOCALSTORAGENAME)
-  return storage ? JSON.parse(storage) : null
+  const storage = JSON.parse(localStorage.getItem(LOCALSTORAGENAME) as any)
+  return storage ? storage : null
 }
+
 export const setStorage = async (items: any) => {
   try {
-    Cookies.set(LOCALSTORAGENAME, JSON.stringify(items), { expires: 1 })
+    localStorage.setItem(LOCALSTORAGENAME, JSON.stringify(items))
   } catch (e) {
     console.log(e)
   }

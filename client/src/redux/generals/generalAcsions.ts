@@ -5,7 +5,6 @@ import { useHttp } from "../hooks/useHttp"
 import { getStorage } from "../../utils/storage"
 import { SECRETCRYPTOKEY } from "../../constants/index"
 import { decryption } from "../../utils/index"
-import Cookies from "js-cookie"
 import NodeRSA from "node-rsa"
 
 const options: any = {
@@ -63,8 +62,10 @@ export function autoCreateCryptoKey() {
       const userId = storage ? storage.userId : null
       storage && (options.token = storage.token)
       const timeId = JSON.stringify(Date.now())
-      const cookies: any = Cookies.get(SECRETCRYPTOKEY)
-      if (cookies) return JSON.parse(cookies)
+      const storageSecret: any = localStorage.getItem(SECRETCRYPTOKEY)
+
+      if (storageSecret) return JSON.parse(storageSecret)
+
       const newKey = new NodeRSA({ b: 1024 })
       const publicKey = newKey.exportKey("public")
       const privateKey = newKey.exportKey("private")
@@ -73,9 +74,10 @@ export function autoCreateCryptoKey() {
       options.body = { userId, timeId: !userId && timeId, clientKey: publicKey }
       const { data } = await dispatch(useHttp(options))
       const dataDecrypt = await decryption(data, privateKey)
-      Cookies.set(SECRETCRYPTOKEY, JSON.stringify(dataDecrypt), { expires: 1 })
+      localStorage.setItem(SECRETCRYPTOKEY, JSON.stringify(dataDecrypt))
+
       if (!userId) {
-        setTimeout(() => Cookies.remove(SECRETCRYPTOKEY), 8000)
+        setTimeout(() => localStorage.removeItem(SECRETCRYPTOKEY), 8000)
       }
       return dataDecrypt
     } catch (e) {

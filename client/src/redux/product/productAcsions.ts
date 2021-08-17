@@ -3,8 +3,8 @@ import { Dispatch } from "redux"
 import { autoCreateCryptoKey } from "../generals/generalAcsions"
 import { getStorage } from "../../utils/storage"
 import { useHttp } from "../hooks/useHttp"
-import { encryption, decryption } from "../../utils/index"
-import { ALL_PRODUCT } from "./types"
+import { encryption, decryption, storagePdf } from "../../utils/index"
+import { ALL_PRODUCT, PRODUCTS_PDF } from "./types"
 import { DISPATCHPDF, RECEIPTPDF } from "../../constants"
 const options: any = {
   url: null,
@@ -117,6 +117,17 @@ export const deleteHistoryProduct = (_id: any) => {
       options.method = "POST"
       await dispatch(useHttp(options) as any)
       dispatch(historyProduct())
+    } catch (e) {
+      console.log(e)
+    }
+  }
+}
+
+export const autoOverHeadPdf = () => {
+  return async (dispatch: Dispatch<any>) => {
+    try {
+      const { getPdf, postPdf } = storagePdf()
+      dispatch({ type: PRODUCTS_PDF, payload: { getPdf, postPdf } })
     } catch (e) {
       console.log(e)
     }

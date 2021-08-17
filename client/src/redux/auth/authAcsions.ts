@@ -6,7 +6,6 @@ import { IS_AUTH_USER, USERS_WORLING } from "./types"
 import { LOCALSTORAGENAME, SECRETCRYPTOKEY } from "../../constants"
 import { autoCreateCryptoKey } from "../generals/generalAcsions"
 import { encryption, decryption } from "../../utils/index"
-import Cookies from "js-cookie"
 
 export const authUser = (isAuthUser: boolean) => {
   return (dispatch: Dispatch): void => {
@@ -91,8 +90,8 @@ export function authLogin(form: ITypesFormLogin) {
 export function logout() {
   return async (dispatch: Dispatch) => {
     dispatch(authUser(false) as any)
-    Cookies.remove(LOCALSTORAGENAME)
-    Cookies.remove(SECRETCRYPTOKEY)
+    localStorage.removeItem(LOCALSTORAGENAME)
+    localStorage.removeItem(SECRETCRYPTOKEY)
     dispatch(autoLogin() as any)
   }
 }
